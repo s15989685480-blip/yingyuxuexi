@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英学阶梯 · 一站式英语学习平台</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231E6B5A'/%3E%3Cpath d='M16 20a4 4 0 0 1 4-4h24a4 4 0 0 1 4 4v28H20a4 4 0 0 0-4 4V20z' fill='%23F5EFE3'/%3E%3Cpath d='M20 24h24M20 32h16M20 40h12' stroke='%231E6B5A' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M42 36l8 5v-18l-8 5z' fill='%23DE8F2E'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@600;700;900&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* ===== 设计令牌 ===== */
+:root{
+  --paper:#F5EFE3; --surface:#FFFDF7; --surface-2:#EDE5D3;
+  --ink:#24312C; --ink-2:#5D6B64; --ink-3:#8A948C;
+  --line:#E2D9C6; --line-2:#EFE8D8;
+  --green:#1E6B5A; --green-d:#174F43; --green-soft:#DFEEE7;
+  --amber:#DE8F2E; --amber-d:#B06F1D; --amber-soft:#FAEED9;
+  --coral:#BC4B39; --coral-soft:#F8E4DE;
+  --blue:#3D6FB4; --blue-soft:#E4EBF7;
+  --violet:#7A5AA7; --violet-soft:#EDE7F6;
+  --shadow:0 10px 28px rgba(36,49,44,.08);
+  --radius:14px;
+  --serif:"Noto Serif SC","Songti SC","STSong",serif;
+  --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  --num:"Nunito","Noto Sans SC",sans-serif;
+  --ipa:"Nunito","Segoe UI","Arial","DejaVu Sans",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+::selection{background:var(--amber-soft)}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select{font:inherit;color:inherit}
+img{display:block} svg{display:inline-block;vertical-align:-0.125em}
+.ico{display:inline-flex;align-items:center;justify-content:center;flex:none}
+ul{list-style:none}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ===== 头部导航 ===== */
+.site-head{position:sticky;top:0;z-index:60;background:rgba(255,253,247,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.head-inner{max-width:1160px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:900;font-size:19px;letter-spacing:.02em;white-space:nowrap}
+.brand .b-mark{color:var(--green)}
+.main-nav{display:flex;gap:2px;margin-left:auto}
+.nav-item{padding:7px 13px;border-radius:9px;font-size:14px;color:var(--ink-2);font-weight:500;white-space:nowrap;min-height:40px;display:inline-flex;align-items:center}
+.nav-item:hover{background:var(--surface-2);color:var(--ink)}
+.nav-item.active{background:var(--green-soft);color:var(--green-d);font-weight:700}
+.head-actions{display:flex;align-items:center;gap:6px}
+.icon-btn{width:40px;height:40px;display:grid;place-items:center;border-radius:10px;color:var(--ink-2);transition:background .15s}
+.icon-btn:hover{background:var(--surface-2);color:var(--ink)}
+
+/* ===== 课程教材导航栏 ===== */
+.levelbar{background:var(--surface);border-bottom:1px solid var(--line)}
+.lb-inner{max-width:1160px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:14px}
+.lb-label{font-size:13px;color:var(--ink-3);font-weight:700;letter-spacing:.06em;white-space:nowrap}
+.lb-label b{color:var(--green);font-size:15px;letter-spacing:0}
+.lb-list{display:flex;gap:8px;flex-wrap:wrap}
+.lv-btn{display:flex;align-items:center;gap:9px;padding:8px 15px;border:1px solid var(--line);border-radius:12px;background:var(--surface);font-weight:700;font-size:14px;transition:transform .15s,border-color .15s,background .15s;box-shadow:0 1px 2px rgba(36,49,44,.04)}
+.lv-btn .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.lv-btn small{font-weight:500;color:var(--ink-3);font-size:12px}
+.lv-btn:hover{transform:translateY(-1px);border-color:var(--ink-3)}
+.lv-btn.active{border-color:var(--lv);background:var(--lv-soft);color:var(--lv-d)}
+.lv-btn.active small{color:var(--lv-d)}
+
+/* ===== 布局 ===== */
+.wrap{max-width:1160px;margin:0 auto;padding:30px 20px 60px}
+.sec{margin-top:38px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.sec-title{font-family:var(--serif);font-size:23px;font-weight:900}
+.sec-sub{color:var(--ink-3);font-size:13px}
+.grid{display:grid;gap:16px}
+
+/* ===== 按钮 ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 21px;border-radius:12px;font-weight:700;font-size:15px;background:var(--green);color:#fff;transition:transform .15s,background .15s,box-shadow .15s;box-shadow:0 2px 6px rgba(30,107,90,.25)}
+.btn:hover{background:var(--green-d);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn-outline{background:var(--surface);border:1.5px solid var(--green);color:var(--green);box-shadow:none}
+.btn-outline:hover{background:var(--green-soft);color:var(--green-d)}
+.btn-ghost{background:var(--surface-2);color:var(--ink);box-shadow:none}
+.btn-ghost:hover{background:var(--line)}
+.btn-sm{padding:7px 13px;font-size:13px;border-radius:9px;box-shadow:none}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.btn .ico{flex:none}
+
+/* ===== Hero ===== */
+.hero{display:grid;grid-template-columns:1.22fr .78fr;gap:40px;align-items:center;padding:38px 0 16px}
+.hero h1{font-family:var(--serif);font-size:clamp(30px,4.4vw,47px);line-height:1.22;font-weight:900;letter-spacing:.01em}
+.hero h1 em{font-style:normal;color:var(--green);position:relative}
+.hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:10px;background:var(--amber-soft);z-index:-1;border-radius:4px}
+.hero .sub{margin-top:16px;color:var(--ink-2);font-size:16px;max-width:54ch}
+.hero-cta{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+.stats{display:flex;gap:30px;margin-top:32px;flex-wrap:wrap;padding-top:22px;border-top:1px dashed var(--line)}
+.stat b{font-family:var(--num);font-size:27px;font-weight:800;color:var(--green-d);display:block;line-height:1.1}
+.stat span{font-size:13px;color:var(--ink-3)}
+.ladder{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px 20px 20px;box-shadow:var(--shadow)}
+.ladder .l-title{font-family:var(--serif);font-weight:900;font-size:15px;color:var(--ink-2);text-align:center;margin-bottom:18px}
+.l-steps{display:flex;flex-direction:column;gap:14px;position:relative}
+.l-steps::before{content:"";position:absolute;left:21px;top:10px;bottom:10px;width:2px;background:var(--line);z-index:0}
+.l-step{display:flex;align-items:center;gap:14px;position:relative;z-index:1}
+.l-num{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-family:var(--num);font-weight:800;font-size:16px;color:#fff;flex:none;box-shadow:0 3px 8px rgba(36,49,44,.15)}
+.l-step b{font-size:16px;font-weight:800}
+.l-step span{display:block;font-size:12.5px;color:var(--ink-3)}
+.l-cap{margin-top:18px;padding:11px;border-radius:12px;background:var(--amber-soft);text-align:center;font-size:13px;font-weight:600;color:var(--amber-d)}
+
+/* ===== 学段卡片 ===== */
+.lvl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:1080px){.lvl-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){.lvl-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.lvl-grid{grid-template-columns:1fr}}
+.lvl-card{position:relative;padding:20px;overflow:hidden;cursor:pointer;transition:transform .16s,box-shadow .16s}
+.lvl-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--lv)}
+.lvl-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.lvl-card .lv-name{font-family:var(--serif);font-size:20px;font-weight:900}
+.lvl-card .lv-sub{font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.lvl-card .lv-book{margin-top:12px;font-size:13px;color:var(--ink-2);padding:8px 11px;background:var(--surface-2);border-radius:9px;line-height:1.5}
+.lvl-card .lv-meta{display:flex;gap:14px;margin-top:13px;font-size:12.5px;color:var(--ink-3)}
+.lvl-card .lv-go{margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;color:var(--lv-d)}
+.lvl-card .lv-go .ico{transition:transform .15s}
+.lvl-card:hover .lv-go .ico{transform:translateX(3px)}
+
+/* ===== 功能磁贴 ===== */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.feat-grid{grid-template-columns:1fr}}
+.feat{padding:18px;display:flex;gap:14px;align-items:flex-start;transition:transform .16s,box-shadow .16s}
+.feat:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.feat .f-ico{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--green-soft);color:var(--green-d);flex:none}
+.feat b{font-size:15.5px;display:block}
+.feat p{font-size:13px;color:var(--ink-2);margin-top:3px}
+
+/* ===== 时间轴 ===== */
+.tl{display:grid;grid-template-columns:130px 24px 1fr;gap:0;row-gap:0}
+.tl-row{display:contents}
+.tl-time{align-self:center;text-align:right;font-family:var(--num);font-weight:800;font-size:16px;color:var(--lv-d);padding:14px 0}
+.tl-axis{position:relative;display:flex;justify-content:center}
+.tl-axis::before{content:"";position:absolute;top:0;bottom:0;width:2px;background:var(--line)}
+.tl-dot{align-self:center;width:14px;height:14px;border-radius:50%;background:var(--lv);justify-self:center;z-index:1;box-shadow:0 0 0 4px var(--lv-soft)}
+.tl-body{align-self:center;padding:14px 0 14px 20px}
+.tl-body b{font-size:16px;font-weight:800;display:block}
+.tl-body span{font-size:13.5px;color:var(--ink-2);display:block;margin-top:3px}
+
+/* ===== 通用卡片元素 ===== */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 1px 3px rgba(36,49,44,.05)}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-3);flex-wrap:wrap;margin-bottom:16px}
+.breadcrumb a{color:var(--green);font-weight:600}
+.breadcrumb a:hover{text-decoration:underline}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:4px 11px;border-radius:999px;background:var(--surface-2);font-size:12.5px;color:var(--ink-2);font-weight:600}
+.chip.lv{color:#fff;font-weight:700}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.badge.amber{background:var(--amber-soft);color:var(--amber-d)}
+.badge.green{background:var(--green-soft);color:var(--green-d)}
+.badge.blue{background:var(--blue-soft);color:var(--blue)}
+.badge.coral{background:var(--coral-soft);color:var(--coral)}
+
+/* ===== 单元卡片 ===== */
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px}
+.unit-card{padding:18px;display:flex;flex-direction:column;gap:10px;transition:transform .16s,box-shadow .16s}
+.unit-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.unit-top{display:flex;align-items:center;gap:10px}
+.unit-no{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;font-family:var(--num);font-weight:800;font-size:15px;flex:none}
+.unit-title{font-weight:800;font-size:15.5px;line-height:1.35}
+.unit-en{font-family:var(--num);color:var(--ink-3);font-size:12.5px}
+.unit-meta{font-size:12.5px;color:var(--ink-3);display:flex;gap:12px}
+.unit-actions{display:flex;gap:8px;margin-top:auto;flex-wrap:wrap}
+
+/* ===== 词汇卡片 ===== */
+.word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:14px}
+.word-card{padding:16px 16px 13px;display:flex;flex-direction:column;gap:0;transition:transform .15s,box-shadow .15s}
+.word-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.w-top{display:flex;align-items:baseline;gap:9px}
+.w-word{font-family:var(--num);font-size:19px;font-weight:800;letter-spacing:.01em}
+.w-ipa{font-family:var(--ipa);font-size:13.5px;color:var(--ink-3)}
+.w-play{margin-left:auto;width:32px;height:32px;border-radius:9px;background:var(--green-soft);color:var(--green-d);display:grid;place-items:center;transition:background .15s,color .15s;flex:none}
+.w-play:hover{background:var(--green);color:#fff}
+.w-pos{font-size:11.5px;color:var(--ink-3);font-weight:600;margin-top:8px}
+.w-cn{font-size:16px;font-weight:700;color:var(--green-d);margin-top:1px}
+.w-ex{font-size:13.5px;color:var(--ink-2);margin-top:9px;line-height:1.55}
+.w-excn{font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.w-foot{display:flex;gap:6px;margin-top:12px;border-top:1px dashed var(--line-2);padding-top:9px}
+.mini-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--ink-2);background:var(--surface-2);transition:background .15s,color .15s}
+.mini-btn:hover{background:var(--line)}
+.mini-btn.on{background:var(--amber-soft);color:var(--amber-d)}
+.mini-btn.done{background:var(--green-soft);color:var(--green-d)}
+
+/* ===== 句型列表 ===== */
+.s-row{display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding:15px 17px;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-bottom:10px;align-items:center}
+.s-en{font-family:var(--num);font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.s-play{width:30px;height:30px;border-radius:8px;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;flex:none}
+.s-play:hover{background:var(--blue);color:#fff}
+.s-cn{color:var(--ink-2);font-size:14px;margin-top:2px;grid-column:1}
+.s-note{grid-column:2;grid-row:1;justify-self:end}
+.s-slow{margin-left:auto}
+
+/* ===== 语法卡 ===== */
+.gram-card{border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,#FFFDF7,#FBF4E4);padding:22px 24px}
+.gram-card h3{font-family:var(--serif);font-size:19px;font-weight:900;display:flex;align-items:center;gap:9px;color:var(--amber-d)}
+.gram-card h3 .g-ico{color:var(--amber)}
+.pts{margin-top:12px}
+.pts li{position:relative;padding-left:20px;margin:9px 0;font-size:14.5px;color:var(--ink)}
+.pts li::before{content:"";position:absolute;left:2px;top:9px;width:7px;height:7px;border-radius:2px;background:var(--amber);transform:rotate(45deg)}
+.g-ex{margin-top:14px;padding:13px 16px;background:var(--surface);border:1px dashed var(--line);border-radius:11px}
+.g-ex div{font-size:14px;margin:3px 0}
+.g-ex .en{font-family:var(--num);font-weight:700;display:flex;gap:9px;align-items:center}
+.g-ex .cn{color:var(--ink-2);font-size:13px}
+
+/* ===== 技巧卡片 ===== */
+.tip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.tip-card{padding:18px;display:flex;flex-direction:column;gap:10px;transition:transform .16s,box-shadow .16s}
+.tip-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.tip-ico{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:var(--lv-soft);color:var(--lv-d)}
+.tip-title{font-weight:800;font-size:15.5px;line-height:1.4}
+.tip-sum{font-size:13px;color:var(--ink-2);line-height:1.6}
+.tip-foot{display:flex;align-items:center;gap:8px;margin-top:auto;font-size:12.5px;color:var(--ink-3)}
+
+/* ===== 文章页 ===== */
+.article{max-width:820px}
+.article-head{padding:26px 28px;margin-bottom:20px;position:relative;overflow:hidden}
+.article-head::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--lv)}
+.article-head h1{font-family:var(--serif);font-size:clamp(23px,3.4vw,31px);font-weight:900;line-height:1.3;margin-top:12px}
+.article-head .tip-sum{color:var(--ink-2);font-size:14.5px;margin-top:10px;max-width:60ch}
+.a-sec{margin-top:24px}
+.a-sec h2{font-family:var(--serif);font-size:18px;font-weight:900;display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.a-sec h2 .n{width:26px;height:26px;border-radius:8px;background:var(--lv);color:#fff;display:grid;place-items:center;font-family:var(--num);font-size:14px;flex:none}
+.a-steps{counter-reset:st}
+.a-step{position:relative;padding:14px 16px 14px 52px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
+.a-step::before{counter-increment:st;content:counter(st);position:absolute;left:14px;top:14px;width:28px;height:28px;border-radius:9px;background:var(--green-soft);color:var(--green-d);display:grid;place-items:center;font-family:var(--num);font-weight:800;font-size:14px}
+.a-step b{font-size:14.5px}
+.a-step p{font-size:13.5px;color:var(--ink-2);margin-top:3px}
+.a-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.a-card{padding:15px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.a-card b{font-size:14px;display:block;color:var(--lv-d)}
+.a-card p{font-size:13px;color:var(--ink-2);margin-top:4px}
+.a-practice{padding:16px 18px;border-radius:12px;background:var(--amber-soft);color:#6E4A12;font-size:14px;line-height:1.7}
+.a-practice b{color:var(--amber-d)}
+.pager{display:flex;gap:12px;margin-top:30px}
+
+/* ===== 考试 ===== */
+.ex-step{padding:22px 24px}
+.ex-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ex-title{font-family:var(--serif);font-size:21px;font-weight:900}
+.ex-meta{display:flex;gap:16px;margin-left:auto;color:var(--ink-2);font-size:13.5px;font-weight:600}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:12px;padding:4px;gap:4px}
+.seg button{padding:9px 18px;border-radius:9px;font-size:13.5px;font-weight:700;color:var(--ink-2)}
+.seg button:hover{color:var(--ink)}
+.seg button.on{background:var(--surface);color:var(--green-d);box-shadow:0 1px 4px rgba(36,49,44,.12)}
+.q-card{padding:26px 28px;margin-top:16px;min-height:220px;display:flex;flex-direction:column}
+.q-type{display:inline-flex;align-items:center;gap:7px;padding:4px 12px;border-radius:999px;font-size:12.5px;font-weight:700;color:#fff;align-self:flex-start}
+.q-stem{font-size:17px;font-weight:700;margin-top:16px;line-height:1.6;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.q-stem .q-word{font-family:var(--num);font-size:20px;font-weight:800;color:var(--green-d)}
+.q-stem .q-ipa{font-family:var(--ipa);font-size:14px;color:var(--ink-3);font-weight:500}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:20px}
+@media(max-width:640px){.q-opts{grid-template-columns:1fr}}
+.q-opt{padding:13px 16px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);font-size:14.5px;font-weight:600;text-align:left;transition:border-color .15s,background .15s;display:flex;gap:11px;align-items:center}
+.q-opt .k{width:24px;height:24px;border-radius:7px;background:var(--surface-2);display:grid;place-items:center;font-family:var(--num);font-size:12.5px;color:var(--ink-2);flex:none;font-weight:800}
+.q-opt:hover{border-color:var(--green)}
+.q-opt.sel{border-color:var(--green);background:var(--green-soft)}
+.q-opt.sel .k{background:var(--green);color:#fff}
+.q-opt.right{border-color:var(--green);background:var(--green-soft)}
+.q-opt.wrong{border-color:var(--coral);background:var(--coral-soft)}
+.q-opt.dim{opacity:.55}
+.q-opt .ck{width:18px;height:18px;margin-left:auto;flex:none}
+.q-input{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.q-input input{flex:1;min-width:200px;padding:12px 15px;border:1.5px solid var(--line);border-radius:11px;background:var(--surface);font-size:16px;font-family:var(--num)}
+.q-input input:focus{border-color:var(--green);outline:none}
+.q-nav{display:flex;align-items:center;gap:10px;margin-top:22px;padding-top:16px;border-top:1px dashed var(--line)}
+.ex-progress{height:7px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin-top:14px}
+.ex-progress i{display:block;height:100%;background:var(--green);border-radius:999px;transition:width .25s}
+
+/* 结果 */
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:18px}
+.res-stat{padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;text-align:center}
+.res-stat b{font-family:var(--num);font-size:22px;font-weight:800;display:block;color:var(--green-d)}
+.res-stat span{font-size:12px;color:var(--ink-3)}
+.res-grade{font-size:26px;font-weight:900;font-family:var(--serif)}
+.bars{margin-top:14px;display:flex;flex-direction:column;gap:9px}
+.bar-row{display:grid;grid-template-columns:96px 1fr 44px;gap:10px;align-items:center;font-size:13px}
+.bar-row .b-track{height:9px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.bar-row .b-track i{display:block;height:100%;border-radius:999px;background:var(--green)}
+.bar-row b{font-family:var(--num);font-weight:800;color:var(--ink-2);text-align:right}
+.wrong-list{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+.wrong-item{padding:15px 17px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.wi-q{font-weight:700;font-size:14.5px;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.wi-a{margin-top:7px;font-size:13.5px;line-height:1.7}
+.wi-a .bad{color:var(--coral);font-weight:700}
+.wi-a .good{color:var(--green-d);font-weight:700}
+.wi-why{margin-top:6px;font-size:13px;color:var(--ink-2);background:var(--surface-2);padding:8px 11px;border-radius:9px}
+
+/* ===== 词典 ===== */
+.dict-search{display:flex;gap:10px;margin-bottom:18px}
+.dict-search input{flex:1;padding:13px 17px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);font-size:15px}
+.dict-search input:focus{border-color:var(--green);outline:none}
+.dict-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.dict-tab{padding:7px 14px;border-radius:999px;font-size:13px;font-weight:700;color:var(--ink-2);background:var(--surface-2)}
+.dict-tab.on{background:var(--green);color:#fff}
+.dict-results{display:flex;flex-direction:column;gap:10px}
+.dict-row{display:grid;grid-template-columns:1fr auto;gap:6px 14px;padding:15px 18px;align-items:center}
+.dict-row .d-word{font-family:var(--num);font-size:18px;font-weight:800;display:flex;align-items:center;gap:10px}
+.dict-row .d-ipa{font-family:var(--ipa);color:var(--ink-3);font-size:13px}
+.dict-row .d-cn{font-weight:700;color:var(--green-d);font-size:15px}
+.dict-row .d-pos{font-size:12px;color:var(--ink-3)}
+.dict-row .d-ex{font-size:13.5px;color:var(--ink-2);margin-top:4px;grid-column:1}
+.dict-row .d-excn{font-size:12.5px;color:var(--ink-3)}
+.dict-row .d-acts{grid-column:2;grid-row:1/3;display:flex;gap:7px}
+
+/* ===== 进度 ===== */
+.pstat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:900px){.pstat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.pstat-grid{grid-template-columns:1fr}}
+.pstat{padding:18px;text-align:center}
+.pstat b{font-family:var(--num);font-size:30px;font-weight:800;color:var(--green-d);display:block}
+.pstat span{font-size:13px;color:var(--ink-3)}
+.chart-box{height:260px;width:100%}
+.hist-row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:13px 16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:9px}
+.hist-row .h-date{font-size:12.5px;color:var(--ink-3);font-family:var(--num)}
+.hist-row .h-tag{font-size:13px;font-weight:700}
+.hist-row .h-score{font-family:var(--num);font-weight:800;font-size:17px}
+
+/* ===== 模态 & Toast ===== */
+.modal-mask{position:fixed;inset:0;background:rgba(24,33,29,.5);display:flex;align-items:center;justify-content:center;z-index:100;padding:18px;animation:fade .18s}
+@keyframes fade{from{opacity:0}}
+.modal{background:var(--surface);border-radius:18px;box-shadow:0 24px 70px rgba(24,33,29,.3);width:100%;max-width:620px;max-height:88vh;overflow:auto;animation:pop .2s}
+@keyframes pop{from{transform:scale(.96);opacity:0}}
+.modal-head{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--line);padding:15px 20px;display:flex;align-items:center;gap:10px;z-index:2}
+.modal-title{font-family:var(--serif);font-weight:900;font-size:17px}
+.modal-x{margin-left:auto;width:32px;height:32px;border-radius:9px;display:grid;place-items:center;color:var(--ink-2)}
+.modal-x:hover{background:var(--surface-2)}
+.modal-body{padding:20px}
+#toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:12px;font-size:14px;font-weight:600;z-index:200;opacity:0;transition:all .25s;pointer-events:none;max-width:80vw;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== 闪卡 ===== */
+.fc-card{min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:30px 26px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,#FFFDF7,#F7F0DE);position:relative;user-select:none}
+.fc-word{font-family:var(--num);font-size:34px;font-weight:800;color:var(--green-d)}
+.fc-ipa{font-family:var(--ipa);color:var(--ink-3);font-size:16px;margin-top:6px}
+.fc-cn{font-size:24px;font-weight:800;color:var(--amber-d);margin-top:8px}
+.fc-ex{font-size:15px;color:var(--ink-2);margin-top:12px;max-width:38ch}
+.fc-excn{font-size:13px;color:var(--ink-3);margin-top:4px}
+.fc-hint{position:absolute;top:14px;font-size:12px;color:var(--ink-3)}
+.fc-acts{display:flex;gap:10px;margin-top:20px;justify-content:center;flex-wrap:wrap}
+.fc-prog{display:flex;align-items:center;gap:12px;margin-top:18px;font-size:13px;color:var(--ink-2)}
+.fc-track{flex:1;height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.fc-track i{display:block;height:100%;background:var(--green);border-radius:999px;transition:width .25s}
+
+/* ===== 页脚 ===== */
+.site-foot{border-top:1px solid var(--line);background:var(--surface);margin-top:30px}
+.foot-inner{max-width:1160px;margin:0 auto;padding:24px 20px;display:flex;gap:14px;justify-content:space-between;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--ink-3)}
+.foot-inner a{color:var(--green);font-weight:600}
+
+/* ===== 空态 ===== */
+.empty{padding:44px 20px;text-align:center;color:var(--ink-3);border:1.5px dashed var(--line);border-radius:var(--radius);background:var(--surface)}
+.empty b{display:block;font-size:15px;color:var(--ink-2);margin-bottom:4px}
+
+/* ===== 响应式 ===== */
+@media(min-width:901px){.levelbar{position:sticky;top:55px;z-index:55}}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;gap:26px}
+  .main-nav{order:3;width:100%;overflow-x:auto;padding:6px 0 2px;margin-left:0}
+  .main-nav::-webkit-scrollbar{display:none}
+  .lb-inner{overflow-x:auto}
+  .lb-list{flex-wrap:nowrap}
+  .lb-inner::-webkit-scrollbar{display:none}
+}
+@media(max-width:560px){
+  .wrap{padding:22px 14px 50px}
+  .brand{font-size:17px}
+  .head-inner{padding:9px 14px}
+  .s-row{grid-template-columns:1fr}
+  .s-note{grid-column:1;grid-row:auto;justify-self:start}
+  .ex-head{flex-direction:column;align-items:flex-start}
+  .ex-meta{margin-left:0}
+  .a-step{padding-left:48px}
+  .tl{grid-template-columns:96px 22px 1fr}
+}
+@media(max-width:700px){
+  .grid{grid-template-columns:1fr!important}
+}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="head-inner">
+    <a class="brand" href="#/home"><span class="b-mark" data-icon="logo"></span>英学阶梯</a>
+    <nav class="main-nav" id="mainNav"></nav>
+    <div class="head-actions">
+      <button class="icon-btn" title="发音设置" onclick="openSettings()" data-icon="settings" aria-label="发音设置"></button>
+    </div>
+  </div>
+</header>
+
+<div class="levelbar">
+  <div class="lb-inner">
+    <div class="lb-label">课程教材<b>｜</b>按学段选课</div>
+    <div class="lb-list" id="levelBar"></div>
+  </div>
+</div>
+
+<main id="app" class="wrap"></main>
+
+<footer class="site-foot">
+  <div class="foot-inner">
+    <div>英学阶梯 · 内置示例教材词库，语音由浏览器原生语音引擎提供</div>
+    <div><a href="#/home">回到首页</a> · 数据保存在本机浏览器</div>
+  </div>
+</footer>
+
+<div id="modal-root"></div>
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script>
+"use strict";
+/* ============ 数据：学段与教材 ============ */
+const LV = [
+  {id:'primary', name:'小学', sub:'启蒙 · 兴趣入门', span:'小学 3–6 年级', book:'人教版 PEP 小学英语', en:'Primary English', c:'#E08F2E', cd:'#B06F1D', soft:'#FAEED9',
+   desc:'以听说为主、兴趣为先：从问候、颜色、动物到家庭与食物，在儿歌和游戏中积累基础词汇，建立开口说英语的信心。'},
+  {id:'junior', name:'初中', sub:'成长 · 体系搭建', span:'初中 7–9 年级', book:'人教版新目标 Go for it', en:'Junior High', c:'#2E8B74', cd:'#1F6E5E', soft:'#DFEEE7',
+   desc:'系统搭建语法与词汇框架：掌握时态、句型、介词等核心语法，扩充 1600+ 基础词汇，听说读写全面起步。'},
+  {id:'senior', name:'高中', sub:'进阶 · 应试突破', span:'高中 10–12 年级', book:'人教版高中英语', en:'Senior High', c:'#3D6FB4', cd:'#2F5A93', soft:'#E4EBF7',
+   desc:'聚焦高考能力：攻克长难句、阅读理解、写作与听力精听，积累高阶词汇与学术表达，从“学英语”转向“用英语”。'},
+  {id:'university', name:'大学', sub:'深造 · 学术应用', span:'大学 / CET 4-6', book:'大学英语 / 四六级备考', en:'Academic English', c:'#7A5AA7', cd:'#5F4387', soft:'#EDE7F6',
+   desc:'面向学术与职场：学术词汇、批判性思维、学术写作与全球议题表达，为四六级、考研和实际应用打下坚实底子。'}
+];
+
+/* ============ 数据：教材单元（词汇 / 句型 / 语法） ============ */
+const UNITS = {
+primary:[
+{id:'p1', no:'Unit 1', cn:'问候与介绍', en:'Hello! Greetings', tip:'把问候语做成角色扮演：你和同桌轮流当外国小朋友，见面用英语打招呼。',
+words:[["hello","həˈləʊ","int.","你好；喂","Hello, I am Mike.","你好，我是迈克。"],["hi","haɪ","int.","嗨；你好","Hi, Lily!","嗨，莉莉！"],["name","neɪm","n.","名字","My name is Amy.","我的名字叫艾米。"],["my","maɪ","pron.","我的","This is my book.","这是我的书。"],["your","jɔː(r)","pron.","你的；你们的","What's your name?","你叫什么名字？"],["I","aɪ","pron.","我","I am seven years old.","我七岁了。"],["meet","miːt","v.","遇见；见面","Nice to meet you.","很高兴认识你。"],["teacher","ˈtiːtʃə(r)","n.","老师","Miss White is my teacher.","怀特老师是我的老师。"],["student","ˈstjuːdnt","n.","学生","I am a student.","我是一名学生。"],["friend","frend","n.","朋友","He is my good friend.","他是我的好朋友。"]],
+sts:[["Good morning!","早上好！","上午见面问候"],["What's your name?","你叫什么名字？","询问姓名"],["My name is Li Lei.","我的名字叫李雷。","自我介绍"],["Nice to meet you.","很高兴认识你。","初次见面"],["See you later.","回头见。","道别用语"]],
+gram:{t:'be 动词 am / is / are 的用法', pts:["am 只和 I 搭配：I am a student.（我是一名学生。）","is 用于第三人称单数 he / she / it：She is my friend.（她是我的朋友。）","are 用于 you / we / they：You are welcome.（你是受欢迎的。）","I am 可缩写为 I'm，is / are 与主语也常缩写（he's, they're）。"],
+ex:[["I am Mike. You are Amy.","我是迈克，你是艾米。"],["She is a teacher.","她是一位老师。"]]}},
+{id:'p2', no:'Unit 2', cn:'颜色', en:'Colours', tip:'用彩笔做“颜色卡片”：每张卡片写单词并涂上对应颜色，打乱后快速说出颜色。',
+words:[["red","red","adj.","红色的","I like the red apple.","我喜欢那个红苹果。"],["yellow","ˈjeləʊ","adj.","黄色的","The banana is yellow.","香蕉是黄色的。"],["blue","bluː","adj.","蓝色的","The sky is blue.","天空是蓝色的。"],["green","ɡriːn","adj.","绿色的","The grass is green.","草是绿色的。"],["black","blæk","adj.","黑色的","My cat is black.","我的猫是黑色的。"],["white","waɪt","adj.","白色的","The cloud is white.","云是白色的。"],["colour","ˈkʌlə(r)","n.","颜色","What colour do you like?","你喜欢什么颜色？"],["orange","ˈɒrɪndʒ","adj.","橙色的；橙子","I have an orange bag.","我有一个橙色的书包。"],["pink","pɪŋk","adj.","粉色的","Her dress is pink.","她的裙子是粉色的。"],["purple","ˈpɜːpl","adj.","紫色的","The grapes are purple.","葡萄是紫色的。"]],
+sts:[["What colour is it?","它是什么颜色？","询问颜色"],["It's red.","它是红色的。","回答颜色"],["I like blue best.","我最喜欢蓝色。","表达喜好"],["Colour the picture, please.","请给这幅画涂色。","课堂指令"],["Red and yellow make orange.","红色和黄色调成橙色。","颜色混合"]],
+gram:{t:'What colour 疑问句与 it\'s 缩写', pts:["询问颜色用 What colour is it?，回答 It's + 颜色词。","it's = it is，口语中常连读。","表示“我最喜欢……”用 I like ... best / most。"],
+ex:[["What colour is your bag? It's blue.","你的书包是什么颜色？是蓝色的。"],["I like green most.","我最喜欢绿色。"]]}},
+{id:'p3', no:'Unit 3', cn:'动物', en:'Animals', tip:'给每种动物做一张“名片卡”：画图 + 写单词 + 读三遍，第二天再认一遍。',
+words:[["cat","kæt","n.","猫","The cat is sleeping.","猫在睡觉。"],["dog","dɒɡ","n.","狗","I walk my dog every day.","我每天遛狗。"],["duck","dʌk","n.","鸭子","The duck can swim.","鸭子会游泳。"],["pig","pɪɡ","n.","猪","The pig is fat.","这头猪很胖。"],["bird","bɜːd","n.","鸟","A bird is singing.","一只鸟在唱歌。"],["fish","fɪʃ","n.","鱼","I can see a fish.","我能看到一条鱼。"],["monkey","ˈmʌŋki","n.","猴子","The monkey likes bananas.","猴子喜欢香蕉。"],["tiger","ˈtaɪɡə(r)","n.","老虎","The tiger is strong.","老虎很强壮。"],["panda","ˈpændə","n.","熊猫","The panda is from China.","熊猫来自中国。"],["elephant","ˈelɪfənt","n.","大象","The elephant has a long nose.","大象有长鼻子。"]],
+sts:[["Look at the cat. It's fat.","看这只猫，它很胖。","描述外貌"],["What's this? It's a duck.","这是什么？是一只鸭子。","this 指近处"],["What's that? It's a panda.","那是什么？是熊猫。","that 指远处"],["I have a pet dog.","我有一只宠物狗。","表达拥有"],["Can it fly? Yes, it can.","它会飞吗？会。","can 表能力"]],
+gram:{t:'What\'s this/that? 与冠词 a / an', pts:["近处用 this（这），远处用 that（那），回答都用 It's ...。","a 用于辅音音素开头的词：a cat；an 用于元音音素开头的词：an elephant。","can 表示能力，后接动词原形：It can swim.（它会游泳。）"],
+ex:[["This is an apple. That is a pear.","这是一个苹果，那是一个梨。"],["The bird can fly.","鸟会飞。"]]}},
+{id:'p4', no:'Unit 4', cn:'数字与家庭', en:'Numbers & Family', tip:'数一数家里的物品和人数，用 How many 造句，边数边用英语读。',
+words:[["one","wʌn","num.","一","I have one pen.","我有一支钢笔。"],["two","tuː","num.","二","She has two eyes.","她有两只眼睛。"],["three","θriː","num.","三","There are three books.","有三本书。"],["four","fɔː(r)","num.","四","The table has four legs.","桌子有四条腿。"],["five","faɪv","num.","五","I am five years old.","我五岁了。"],["family","ˈfæməli","n.","家庭","I love my family.","我爱我的家人。"],["father","ˈfɑːðə(r)","n.","爸爸；父亲","My father is tall.","我的爸爸很高。"],["mother","ˈmʌðə(r)","n.","妈妈；母亲","My mother is kind.","我的妈妈很和善。"],["brother","ˈbrʌðə(r)","n.","兄弟","My brother is ten.","我哥哥十岁了。"],["sister","ˈsɪstə(r)","n.","姐妹","This is my sister.","这是我的姐姐。"]],
+sts:[["How many books do you have?","你有多少本书？","How many 提问数量"],["I have three books.","我有三本书。","回答数量"],["This is my father.","这是我的爸爸。","介绍家人"],["How old are you? I'm seven.","你几岁？我七岁。","询问年龄"],["I have a big family.","我有一个大家庭。","描述家庭"]],
+gram:{t:'How many 与 How old 疑问句', pts:["How many + 复数名词 提问数量：How many pens do you have?（你有多少支钢笔？）","How old 提问年龄：How old are you? 回答 I'm + 数字。","数字后接复数名词：three books（三本书）。"],
+ex:[["How many brothers do you have? Two.","你有几个兄弟？两个。"],["My sister is four years old.","我妹妹四岁。"]]}},
+{id:'p5', no:'Unit 5', cn:'食物与水果', en:'Food & Fruit', tip:'晚饭前用英语报出桌上的食物，说对三个才能开饭。',
+words:[["apple","ˈæpl","n.","苹果","An apple a day keeps the doctor away.","一天一个苹果，医生远离我。"],["banana","bəˈnɑːnə","n.","香蕉","The monkey eats a banana.","猴子吃香蕉。"],["pear","peə(r)","n.","梨","This pear is sweet.","这个梨很甜。"],["cake","keɪk","n.","蛋糕","I eat a birthday cake.","我吃生日蛋糕。"],["bread","bred","n.","面包","I have bread for breakfast.","我早餐吃面包。"],["rice","raɪs","n.","米饭","We eat rice with chopsticks.","我们用筷子吃米饭。"],["milk","mɪlk","n.","牛奶","I drink milk every morning.","我每天早上喝牛奶。"],["egg","eɡ","n.","鸡蛋","The hen lays an egg.","母鸡下了一个蛋。"],["water","ˈwɔːtə(r)","n.","水","Please drink some water.","请喝点水。"],["juice","dʒuːs","n.","果汁","I like orange juice.","我喜欢橙汁。"]],
+sts:[["I'd like some bread, please.","请给我一些面包。","礼貌点餐"],["What would you like? I'd like some rice.","你想要什么？我想要米饭。","would like 点餐"],["Do you like apples? Yes, I do.","你喜欢苹果吗？喜欢。","一般疑问句"],["I'm hungry. Let's eat.","我饿了，我们吃饭吧。","表达状态"],["I'm thirsty. I want some water.","我渴了，我想喝水。","want 表达需求"]],
+gram:{t:'一般现在时与 Do you like...?', pts:["一般疑问句用 Do 开头：Do you like apples? 回答 Yes, I do. / No, I don't.","I'd like = I would like，表示“我想要”，语气更礼貌。","some 用于肯定句：I want some water.（我想要一些水。）"],
+ex:[["Do you like milk? Yes, I do.","你喜欢牛奶吗？喜欢。"],["I'd like an egg and some bread.","我想要一个鸡蛋和一些面包。"]]}}
+],
+junior:[
+{id:'j1', no:'Unit 1', cn:'我的名字叫吉娜', en:"My name's Gina", tip:'把同学的名字做成英文名卡，每天互相问答 What\'s your name?',
+words:[["telephone","ˈtelɪfəʊn","n.","电话","What's your telephone number?","你的电话号码是多少？"],["number","ˈnʌmbə(r)","n.","号码；数字","Eight is my lucky number.","八是我的幸运数字。"],["first","fɜːst","adj.","第一的；名（first name）","My first name is Li.","我的名是李。"],["last","lɑːst","adj.","最后的；姓（last name）","My last name is Wang.","我的姓是王。"],["middle","ˈmɪdl","adj.","中间的","Full name = first + middle + last.","全名 = 名 + 中间名 + 姓。"],["school","skuːl","n.","学校","I like my new school.","我喜欢我的新学校。"],["card","kɑːd","n.","卡片；名片","This is my ID card.","这是我的身份证。"],["nice","naɪs","adj.","美好的；和善的","It's nice to see you again.","再次见到你真好。"],["China","ˈtʃaɪnə","n.","中国","I am from China.","我来自中国。"],["phone","fəʊn","n.","电话（phone = telephone）","May I use your phone?","我可以用一下你的电话吗？"]],
+sts:[["What's your name? My name's Gina.","你叫什么名字？我叫吉娜。","询问姓名"],["What's your phone number?","你的电话号码是多少？","询问电话"],["Nice to meet you.","很高兴认识你。","初次见面礼貌语"],["What's his last name?","他的姓是什么？","询问姓氏"],["Are you in Grade Seven? Yes, I am.","你在七年级吗？是的。","询问年级"]],
+gram:{t:'物主代词与 be 动词', pts:["my（我的）、your（你的）、his/her（他的/她的）后接名词：my name。","What's = What is；My name's = My name is。","英文姓名顺序是名在前姓在后：first name（名）+ last name（姓）。"],
+ex:[["Her name is Mary, and her last name is Green.","她的名字是玛丽，姓格林。"],["Are you a new student? Yes, I am.","你是新学生吗？是的。"]]}},
+{id:'j2', no:'Unit 2', cn:'这是我的姐姐', en:'This is my sister', tip:'画一张家庭树 Family Tree，在每个人旁边写上英文称呼，边指边读。',
+words:[["parent","ˈpeərənt","n.","父亲或母亲","My parents love me.","我的父母爱我。"],["grandmother","ˈɡrænmʌðə(r)","n.","祖母；外祖母","My grandmother tells stories.","我奶奶讲故事。"],["grandfather","ˈɡrænfɑːðə(r)","n.","祖父；外祖父","My grandfather is 70.","我爷爷七十岁了。"],["these","ðiːz","pron.","这些（this 的复数）","These are my books.","这些是我的书。"],["those","ðəʊz","pron.","那些（that 的复数）","Those are my friends.","那些是我的朋友。"],["who","huː","pron.","谁","Who is that girl?","那个女孩是谁？"],["they","ðeɪ","pron.","他们；她们；它们","They are my classmates.","他们是我的同学。"],["son","sʌn","n.","儿子","He is my uncle's son.","他是我叔叔的儿子。"],["daughter","ˈdɔːtə(r)","n.","女儿","She is my aunt's daughter.","她是我阿姨的女儿。"],["cousin","ˈkʌzn","n.","堂（表）兄弟姐妹","My cousin lives in Beijing.","我表哥住在北京。"]],
+sts:[["This is my sister.","这是我的姐姐。","介绍近处的人"],["That is my mother.","那是我妈妈。","介绍远处的人"],["These are my grandparents.","这些是我的祖父母。","介绍复数"],["Who is she? She is my aunt.","她是谁？她是我阿姨。","询问人物"],["Is this your brother? No, he isn't.","这是你哥哥吗？不，不是。","一般疑问句"]],
+gram:{t:'指示代词 this / that / these / those', pts:["单数：this（这）/ that（那）；复数：these（这些）/ those（那些）。","单数用 is，复数用 are：This is ... / These are ...","由近及远介绍：This is my sister. That is my mother."],
+ex:[["These are my parents, and those are my grandparents.","这些是我的父母，那些是我的祖父母。"],["Who is that man? He is my uncle.","那个男人是谁？他是我叔叔。"]]}},
+{id:'j3', no:'Unit 3', cn:'这是你的铅笔吗？', en:'Is this your pencil?', tip:'给文具贴上英文标签，和同桌玩“失物招领”游戏，用 Is this your...? 询问。',
+words:[["pencil","ˈpensl","n.","铅笔","May I borrow your pencil?","我能借你的铅笔吗？"],["pen","pen","n.","钢笔","This pen writes well.","这支钢笔很好写。"],["eraser","ɪˈreɪzə(r)","n.","橡皮","I need a new eraser.","我需要一块新橡皮。"],["ruler","ˈruːlə(r)","n.","尺子","The ruler is 30 cm long.","这把尺子有 30 厘米长。"],["dictionary","ˈdɪkʃənri","n.","词典","Look it up in the dictionary.","在词典里查一下。"],["schoolbag","ˈskuːlbæɡ","n.","书包","My schoolbag is heavy.","我的书包很重。"],["notebook","ˈnəʊtbʊk","n.","笔记本","Write it in your notebook.","把它记在笔记本上。"],["box","bɒks","n.","盒子","The box is full of pens.","盒子里装满了钢笔。"],["watch","wɒtʃ","n.","手表","His watch is new.","他的手表是新的。"],["key","kiː","n.","钥匙","Where is my key?","我的钥匙在哪里？"]],
+sts:[["Is this your pencil? Yes, it is.","这是你的铅笔吗？是的。","确认物品归属"],["Is that your eraser? No, it isn't.","那是你的橡皮吗？不，不是。","否定回答"],["Excuse me, what's this in English?","打扰一下，这个用英语怎么说？","询问物品英文名"],["Thank you for your help.","谢谢你的帮助。","表达感谢"],["You're welcome.","不客气。","回应感谢"]],
+gram:{t:'一般疑问句 Is this...? 与名词性物主代词', pts:["把 be 动词提到句首变疑问：This is your pen. → Is this your pen?","肯定回答 Yes, it is.；否定回答 No, it isn't.（isn't = is not）","mine（我的）、yours（你的）等名词性物主代词可单独使用：The pen is mine."],
+ex:[["Is this your dictionary? No, it's hers.","这是你的词典吗？不，是她的。"],["The watch is mine, and the keys are yours.","手表是我的，钥匙是你的。"]]}},
+{id:'j4', no:'Unit 4', cn:'我的书包在哪里？', en:"Where's my schoolbag?", tip:'把东西藏在房间里，用 Where is...? 让同伴猜位置，猜中换人。',
+words:[["where","weə(r)","adv.","在哪里","Where is my pen?","我的钢笔在哪里？"],["table","ˈteɪbl","n.","桌子","The keys are on the table.","钥匙在桌子上。"],["bed","bed","n.","床","I read in bed.","我躺在床上看书。"],["bookcase","ˈbʊkkeɪs","n.","书柜","Put the books in the bookcase.","把书放进书柜里。"],["sofa","ˈsəʊfə","n.","沙发","The cat is on the sofa.","猫在沙发上。"],["chair","tʃeə(r)","n.","椅子","Sit on the chair, please.","请坐到椅子上。"],["under","ˈʌndə(r)","prep.","在……下面","The ball is under the desk.","球在桌子下面。"],["behind","bɪˈhaɪnd","prep.","在……后面","The tree is behind the house.","树在房子后面。"],["next to","ˈnekst tuː","prep.","紧挨着","The bank is next to the park.","银行紧挨着公园。"],["know","nəʊ","v.","知道","I know the answer.","我知道答案。"]],
+sts:[["Where's my schoolbag? It's under the bed.","我的书包在哪？在床下面。","询问位置"],["Where are my keys? They're on the table.","我的钥匙在哪？在桌子上。","复数位置"],["Is the book on the chair? Yes, it is.","书在椅子上吗？是的。","确认位置"],["The shoes are behind the door.","鞋子在门后面。","behind 用法"],["I don't know where it is.","我不知道它在哪。","否定表达"]],
+gram:{t:'Where 疑问句与方位介词', pts:["询问位置用 Where is/are + 物品？回答 It's/They're + 介词短语。","常用介词：on（在…上）、in（在…里）、under（在…下）、behind（在…后）、next to（紧挨着）。","behind（在后面）与 next to（在旁边）不要混淆。"],
+ex:[["Where are the glasses? They're next to the phone.","眼镜在哪？紧挨着电话。"],["The schoolbag is behind the chair.","书包在椅子后面。"]]}},
+{id:'j5', no:'Unit 5', cn:'你有一个足球吗？', en:'Do you have a soccer ball?', tip:'用 Do you have...? 调查三位同学的体育爱好，把结果用英语说给全班听。',
+words:[["soccer","ˈsɒkə(r)","n.","足球","Let's play soccer after school.","放学后我们踢足球吧。"],["basketball","ˈbɑːskɪtbɔːl","n.","篮球","He plays basketball well.","他篮球打得好。"],["volleyball","ˈvɒlibɔːl","n.","排球","We need a volleyball.","我们需要一个排球。"],["tennis","ˈtenɪs","n.","网球","I play tennis every weekend.","我每个周末打网球。"],["ping-pong","ˈpɪŋpɒŋ","n.","乒乓球","Ping-pong is popular in China.","乒乓球在中国很流行。"],["bat","bæt","n.","球拍","I have a tennis bat.","我有一副网球拍。"],["play","pleɪ","v.","玩；打（球）","Can you play basketball?","你会打篮球吗？"],["sound","saʊnd","v.","听起来","That sounds interesting.","那听起来很有趣。"],["interesting","ˈɪntrəstɪŋ","adj.","有趣的","The game is interesting.","这个游戏很有趣。"],["boring","ˈbɔːrɪŋ","adj.","无聊的","The movie is boring.","这部电影很无聊。"]],
+sts:[["Do you have a soccer ball? Yes, I do.","你有足球吗？是的。","have 一般疑问句"],["Does he have a basketball? No, he doesn't.","他有篮球吗？不，没有。","三单疑问"],["Let's play tennis!","我们打网球吧！","Let's 提议"],["That sounds great.","那听起来棒极了。","sounds 评价"],["I don't have a volleyball.","我没有排球。","don't have 否定"]],
+gram:{t:'一般现在时 have / has 与 do / does', pts:["主语是 I/you/we/they 时用 have；第三人称单数用 has。","变疑问句：Do you have...? / Does he have...?（has 还原为 have）。","Let's = Let us，表示“让我们一起…吧”。"],
+ex:[["Does your brother have a tennis bat? Yes, he does.","你哥哥有网球拍吗？是的。"],["Let's watch TV. That sounds boring.","我们看电视吧。那听起来很无聊。"]]}}
+],
+senior:[
+{id:'s1', no:'Unit 1', cn:'青少年生活', en:'Teenage life', tip:'用英语写一周“时间日志”，记录课程、活动与感受，练习新词。',
+words:[["teenager","ˈtiːneɪdʒə(r)","n.","青少年","Teenagers need enough sleep.","青少年需要充足的睡眠。"],["challenge","ˈtʃælɪndʒ","n.","挑战；难题","Learning English is a challenge.","学英语是一个挑战。"],["volunteer","ˌvɒlənˈtɪə(r)","n./v.","志愿者；自愿做","She volunteers at the library.","她在图书馆做志愿者。"],["debate","dɪˈbeɪt","n./v.","辩论","We had a debate about school life.","我们就学校生活进行了一场辩论。"],["prefer","prɪˈfɜː(r)","v.","更喜欢","I prefer reading to watching TV.","比起看电视，我更喜欢阅读。"],["schedule","ˈʃedjuːl","n.","时间表；日程","My schedule is quite full.","我的日程很满。"],["behaviour","bɪˈheɪvjə(r)","n.","行为；举止","Good behaviour is appreciated.","良好的行为举止受到赞赏。"],["graduate","ˈɡrædʒuət","v./n.","毕业；毕业生","He graduated from high school.","他从高中毕业了。"],["movement","ˈmuːvmənt","n.","运动；活动","She is active in the art movement.","她积极参与艺术运动。"],["attitude","ˈætɪtjuːd","n.","态度","A positive attitude helps a lot.","积极的态度大有帮助。"]],
+sts:[["What do you like to do after class?","课后你喜欢做什么？","询问爱好"],["I prefer to study in the library.","我更喜欢在图书馆学习。","prefer 用法"],["I find the debate club interesting.","我觉得辩论社很有趣。","find + adj. 结构"],["He is planning to be a volunteer.","他计划成为一名志愿者。","be going to 表计划"],["It is important to keep a good schedule.","保持良好作息很重要。","It is + adj. + to do"]],
+gram:{t:'prefer 与 It is + adj. + to do', pts:["prefer A to B：比起 B 更喜欢 A；prefer to do sth.：更喜欢做某事。","find + 宾语 + 形容词：I find the book interesting.（我觉得这本书有趣。）","It is + 形容词 + to do sth. 是高频句型，it 作形式主语。"],
+ex:[["I prefer walking to cycling.","比起骑车，我更喜欢步行。"],["It is necessary to plan your time well.","合理规划时间很有必要。"]]}},
+{id:'s2', no:'Unit 2', cn:'环球旅行', en:'Travelling around', tip:'为一次虚拟旅行做英文攻略：签证、机票、景点、预算，全部用英语写。',
+words:[["apply","əˈplaɪ","v.","申请；应用","I applied for a visa online.","我在网上申请了签证。"],["visa","ˈviːzə","n.","签证","The visa is valid for one year.","签证有效期一年。"],["rent","rent","v./n.","租用；租金","We rented a car in Paris.","我们在巴黎租了辆车。"],["pack","pæk","v.","打包；收拾行李","I need to pack my suitcase.","我需要收拾行李箱。"],["amazing","əˈmeɪzɪŋ","adj.","令人惊奇的","The view is amazing!","景色太震撼了！"],["arrangement","əˈreɪndʒmənt","n.","安排；筹备","All the arrangements are done.","所有安排都已完成。"],["extremely","ɪkˈstriːmli","adv.","极其；非常","The hotel is extremely comfortable.","这家酒店极其舒适。"],["source","sɔːs","n.","来源；源头","The river has its source here.","这条河的源头在这里。"],["narrow","ˈnærəʊ","adj.","狭窄的","The path is narrow and steep.","这条小路又窄又陡。"],["admire","ədˈmaɪə(r)","v.","欣赏；钦佩","I admire the ancient buildings.","我很欣赏那些古建筑。"]],
+sts:[["Where are you going for the holiday?","假期你要去哪里？","询问计划"],["I have booked a room in advance.","我提前订好了房间。","book 预订"],["The local food tastes amazing.","当地食物味道棒极了。","taste + adj."],["How long will you stay there?","你会在那里待多久？","询问时长"],["Remember to take your passport.","记得带上护照。","remember to do"]],
+gram:{t:'定语从句与时间/地点表达', pts:["定语从句用 that/which/where 修饰名词：the hotel where we stayed（我们住的酒店）。","taste/sound/look + 形容词，感官动词后接形容词而非副词。","remember to do（记得要做）与 remember doing（记得做过）不同。"],
+ex:[["This is the city where I grew up.","这就是我长大的城市。"],["The dish smells wonderful.","这道菜闻起来很香。"]]}},
+{id:'s3', no:'Unit 3', cn:'运动与健康', en:'Sports and fitness', tip:'用英语记录一周运动量：运动项目、时长和身体感受，写成健身小日记。',
+words:[["fitness","ˈfɪtnəs","n.","健康；健身","Yoga is good for fitness.","瑜伽有益健康。"],["stadium","ˈsteɪdiəm","n.","体育场","The stadium holds 50,000 people.","这个体育场能容纳五万人。"],["event","ɪˈvent","n.","（体育）项目；事件","She won two events yesterday.","她昨天赢了两项比赛。"],["honour","ˈɒnə(r)","n.","荣誉；荣幸","It is an honour to compete here.","能在这里比赛很荣幸。"],["champion","ˈtʃæmpiən","n.","冠军","He became the national champion.","他成为了全国冠军。"],["determine","dɪˈtɜːmɪn","v.","决定；下决心","She determined to train harder.","她下决心更加刻苦训练。"],["pretend","prɪˈtend","v.","假装","Don't pretend to be tired.","别假装很累。"],["positive","ˈpɒzətɪv","adj.","积极的；正面的","Stay positive even when you lose.","即使输了也要保持积极。"],["diet","ˈdaɪət","n.","日常饮食","A balanced diet is important.","均衡饮食很重要。"],["regularly","ˈreɡjələli","adv.","定期地；经常地","Exercise regularly to stay fit.","经常锻炼以保持健康。"]],
+sts:[["How often do you exercise?","你多久锻炼一次？","询问频率"],["I work out three times a week.","我每周锻炼三次。","work out 锻炼"],["It is important to warm up first.","先热身很重要。","warm up 热身"],["He has kept a healthy diet for years.","他多年来坚持健康饮食。","现在完成时"],["Practice makes perfect.","熟能生巧。","谚语"]],
+gram:{t:'How often 与现在完成时', pts:["How often 询问频率，回答用 once/twice/three times a week。","现在完成时 have/has + 过去分词：has kept（一直保持）。","Practice makes perfect. 是谚语，句中无 be 动词，用原形 makes。"],
+ex:[["How often do you swim? Twice a week.","你多久游一次泳？一周两次。"],["I have exercised regularly for years.","我多年来一直定期锻炼。"]]}},
+{id:'s4', no:'Unit 4', cn:'自然灾害', en:'Natural disasters', tip:'制作一份英文“防灾手册”：台风、地震怎么避险，用学过的词写成清单。',
+words:[["disaster","dɪˈzɑːstə(r)","n.","灾难","The earthquake was a great disaster.","这场地震是一场大灾难。"],["tornado","tɔːˈneɪdəʊ","n.","龙卷风","The tornado destroyed several houses.","龙卷风摧毁了几栋房屋。"],["drought","draʊt","n.","干旱","The drought lasted three months.","干旱持续了三个月。"],["landslide","ˈlændslaɪd","n.","山体滑坡","Heavy rain caused a landslide.","大雨引发了山体滑坡。"],["tsunami","tsuːˈnɑːmi","n.","海啸","A tsunami hit the coast.","海啸袭击了海岸。"],["rescue","ˈreskjuː","v./n.","营救；救援","Rescuers saved the trapped people.","救援人员救出了被困群众。"],["shelter","ˈʃeltə(r)","n.","避难所；遮蔽处","People took shelter in the hall.","人们在礼堂里避难。"],["evacuate","ɪˈvækjueɪt","v.","撤离；疏散","The village was evacuated in time.","村庄及时完成了疏散。"],["emergency","ɪˈmɜːdʒənsi","n.","紧急情况","Call 119 in an emergency.","紧急情况拨打119。"],["survive","səˈvaɪv","v.","幸存；存活","The dog survived the storm.","这条狗在暴风雨中幸存了。"]],
+sts:[["The rescue team arrived quickly.","救援队很快就到了。","一般过去时"],["People should stay calm in an earthquake.","地震时人们应保持冷静。","情态动词 should"],["Take shelter under a strong table.","在结实的桌子下躲避。","祈使句"],["The flood damaged many crops.","洪水毁坏了许多庄稼。","damage 损坏"],["Hope is what keeps us going.","希望支撑我们前行。","表语从句"]],
+gram:{t:'should 情态动词与被动语态', pts:["should + 动词原形表建议：You should stay calm.（你应该保持冷静。）","被动语态 be + 过去分词：The village was evacuated.（村庄被疏散了。）","定语从句 who/that 指人：Rescuers who arrived first...（最先到达的救援人员…）"],
+ex:[["Everyone should know first aid.","每个人都应该懂急救。"],["The bridge was rebuilt after the flood.","洪水后大桥被重建了。"]]}},
+{id:'s5', no:'Unit 5', cn:'世界上的语言', en:'Languages around the world', tip:'了解英语的“世界化”：收集 5 个来自其他语言的外来词，讲给大家听。',
+words:[["official","əˈfɪʃl","adj.","官方的；正式的","English is an official language there.","英语在那里是官方语言。"],["native","ˈneɪtɪv","adj./n.","本地的；母语者","She is a native speaker of English.","她以英语为母语。"],["reference","ˈrefrəns","n.","参考；查阅","Keep the book for reference.","留着这本书作参考。"],["despite","dɪˈspaɪt","prep.","尽管；不管","Despite the rain, we went out.","尽管下雨，我们还是出门了。"],["factor","ˈfæktə(r)","n.","因素","Time is a key factor in exams.","时间是考试的关键因素。"],["based","beɪst","adj.","以……为基础的","The film is based on a true story.","这部电影基于真实故事。"],["character","ˈkærəktə(r)","n.","（汉字）字符；性格","Chinese characters are beautiful.","汉字很美。"],["symbol","ˈsɪmbl","n.","象征；符号","The dove is a symbol of peace.","鸽子是和平的象征。"],["global","ˈɡləʊbl","adj.","全球的","English is a global language.","英语是一种全球性语言。"],["appreciate","əˈpriːʃieɪt","v.","欣赏；感激","I really appreciate your help.","我非常感激你的帮助。"]],
+sts:[["How many languages can you speak?","你会说几种语言？","询问语言能力"],["Learning a language takes time and effort.","学一门语言需要时间和努力。","take 花费"],["It is based on how you use it daily.","这取决于你日常如何使用它。","be based on"],["Despite the difficulty, she keeps learning.","尽管困难，她仍坚持学习。","despite 让步"],["Language connects people around the world.","语言连接着世界各地的人。","connect 连接"]],
+gram:{t:'despite 让步结构与 be based on', pts:["despite + 名词/动名词表让步：Despite the rain...（尽管下雨…）；后接句子则用 although。","be based on：以……为基础，是常用被动短语。","be worth doing：值得做：The book is worth reading.（这本书值得一读。）"],
+ex:[["Despite his age, he still learns new words.","尽管年事已高，他仍在学习新词。"],["The theory is based on years of research.","这个理论基于多年研究。"]]}}
+],
+university:[
+{id:'u1', no:'Unit 1', cn:'学术生活', en:'Academic life', tip:'听一节英文公开课并记“结构笔记”：主题、论点、例子、结论四栏。',
+words:[["academic","ˌækəˈdemɪk","adj./n.","学术的；学者","Academic writing needs clear logic.","学术写作需要清晰的逻辑。"],["lecture","ˈlektʃə(r)","n./v.","讲座；讲课","The lecture lasted two hours.","讲座持续了两个小时。"],["seminar","ˈsemɪnɑː(r)","n.","研讨课；研讨会","We discussed the paper in the seminar.","我们在研讨课上讨论了论文。"],["assignment","əˈsaɪnmənt","n.","作业；任务","The assignment is due on Friday.","作业周五截止。"],["plagiarism","ˈpleɪdʒərɪzəm","n.","抄袭；剽窃","Plagiarism is strictly forbidden.","抄袭被严格禁止。"],["deadline","ˈdedlaɪn","n.","截止日期","The deadline is approaching.","截止日期快到了。"],["faculty","ˈfæklti","n.","全体教员；（大学的）系","The faculty of arts is famous.","文学院很有名。"],["campus","ˈkæmpəs","n.","校园","Life on campus is colourful.","校园生活丰富多彩。"],["scholarship","ˈskɒləʃɪp","n.","奖学金","She won a full scholarship.","她获得了全额奖学金。"],["undergraduate","ˌʌndəˈɡrædʒuət","n.","本科生","He is an undergraduate student.","他是一名本科生。"]],
+sts:[["The lecture covers three main points.","讲座涵盖三个要点。","cover 涵盖"],["The assignment should be submitted online.","作业应在线提交。","should be done 被动"],["You'd better cite your sources clearly.","你最好清楚标注引用来源。","had better 建议"],["The deadline for the essay is next Monday.","论文截止日期是下周一。","deadline 用法"],["Research skills matter in university.","研究能力在大学里很重要。","matter 要紧"]],
+gram:{t:'学术写作常见表达', pts:["cover 表示“涵盖”：The lecture covers...（讲座涵盖…）。","had better + 动词原形表建议：You'd better cite...（你最好引用…）。","被动语态 be + 过去分词在学术表达中高频出现。"],
+ex:[["The report should be submitted by email.","报告应通过邮件提交。"],["This chapter covers the research method.","这一章涵盖研究方法。"]]}},
+{id:'u2', no:'Unit 2', cn:'批判性思维', en:'Critical thinking', tip:'读一篇英文评论，找出它的“论点-证据-结论”，并写下你自己的判断。',
+words:[["critical","ˈkrɪtɪkl","adj.","批判性的；关键的","Critical thinking is a core skill.","批判性思维是一项核心技能。"],["analysis","əˈnæləsɪs","n.","分析","We did a detailed analysis of the data.","我们对数据做了详细分析。"],["evaluate","ɪˈvæljueɪt","v.","评估；评价","Evaluate the sources before citing them.","引用前先评估来源。"],["assumption","əˈsʌmpʃn","n.","假设；假定","The argument rests on a false assumption.","该论点建立在一个错误假设上。"],["evidence","ˈevɪdəns","n.","证据","There is little evidence to support it.","几乎没有证据支持这一点。"],["argument","ˈɑːɡjumənt","n.","论点；论证","His argument is well structured.","他的论证结构很好。"],["bias","ˈbaɪəs","n.","偏见；倾向","Be aware of your own bias.","要注意自己的偏见。"],["perspective","pəˈspektɪv","n.","视角；观点","Try to see it from her perspective.","试着从她的视角看问题。"],["logical","ˈlɒdʒɪkl","adj.","合乎逻辑的","The conclusion is logical.","这个结论合乎逻辑。"],["infer","ɪnˈfɜː(r)","v.","推断；推论","What can you infer from the text?","你能从文中推断出什么？"]],
+sts:[["What evidence supports this claim?","什么证据支持这一说法？","证据询问"],["We should question our assumptions.","我们应该质疑自己的假设。","question 质疑"],["The two arguments contradict each other.","两个论点相互矛盾。","contradict 矛盾"],["In my perspective, the data is misleading.","依我看，这些数据具有误导性。","in one's perspective"],["Logical reasoning leads to sound conclusions.","逻辑推理导向可靠的结论。","lead to 导致"]],
+gram:{t:'观点表达与连接词', pts:["in one's perspective / from one's point of view：从……的角度看。","contradict（与…矛盾）、support（支持）、refute（反驳）是论证常用动词。","what 引导主语从句：What you think matters.（你所想的很重要。）"],
+ex:[["From an academic perspective, the study is solid.","从学术角度看，这项研究很扎实。"],["What matters most is the evidence.","最重要的是证据。"]]}},
+{id:'u3', no:'Unit 3', cn:'沟通与表达', en:'Communication skills', tip:'用英语向室友解释一件复杂的事，练习把长句拆成短句、把想法说清楚。',
+words:[["communicate","kəˈmjuːnɪkeɪt","v.","沟通；交流","We communicate mostly by email.","我们主要通过邮件交流。"],["negotiate","nɪˈɡəʊʃieɪt","v.","谈判；协商","They negotiated a new contract.","他们协商了一份新合同。"],["persuade","pəˈsweɪd","v.","说服","He persuaded me to join the club.","他说服我加入了俱乐部。"],["articulate","ɑːˈtɪkjuleɪt","v.","清晰表达","She articulated her ideas clearly.","她清晰地表达了自己的想法。"],["concise","kənˈsaɪs","adj.","简洁的","Keep your email concise.","让你的邮件简洁一些。"],["clarity","ˈklærəti","n.","清晰；明确","Clarity is key to good writing.","清晰是好写作的关键。"],["feedback","ˈfiːdbæk","n.","反馈；意见","We received positive feedback.","我们收到了积极的反馈。"],["verbal","ˈvɜːbl","adj.","口头的；言语的","Verbal communication matters too.","口头交流也很重要。"],["nonverbal","nɒnˈvɜːbl","adj.","非言语的","Body language is nonverbal communication.","肢体语言是非言语交流。"],["empathy","ˈempəθi","n.","同理心","Good listeners show empathy.","好的倾听者会展现同理心。"],["conflict","ˈkɒnflɪkt","n.","冲突","Open talk can avoid conflict.","坦诚交谈可以避免冲突。"],["resolve","rɪˈzɒlv","v.","解决","We resolved the issue quickly.","我们很快解决了问题。"]],
+sts:[["Could you be more specific, please?","你能说得更具体一点吗？","请求澄清"],["Let me put it another way.","让我换个方式说。","换种说法"],["I appreciate your honest feedback.","我感谢你的坦诚反馈。","感谢反馈"],["Active listening prevents misunderstanding.","积极倾听能避免误解。","prevent 防止"],["We reached an agreement after discussion.","讨论后我们达成了共识。","reach an agreement"]],
+gram:{t:'礼貌请求与 have/get + 宾语补足语', pts:["Could you + 动词原形？表礼貌请求。","keep + 宾语 + 形容词：Keep it concise.（保持简洁。）","prevent sth. / prevent sb. from doing：防止某事发生。"],
+ex:[["Could you clarify that point for me?","你能为我澄清那一点吗？"],["Good communication prevents conflicts.","良好的沟通能预防冲突。"]]}},
+{id:'u4', no:'Unit 4', cn:'职场与职业发展', en:'Career & workplace', tip:'用英语写一份模拟简历，再准备 3 个面试问题的回答并录音回听。',
+words:[["resume","ˈrezjumeɪ","n.","简历","Attach your resume to the email.","把简历附在邮件里。"],["interview","ˈɪntəvjuː","n./v.","面试；采访","I have a job interview tomorrow.","我明天有一场求职面试。"],["internship","ˈɪntɜːnʃɪp","n.","实习","She did an internship at a bank.","她在一家银行实习过。"],["recruit","rɪˈkruːt","v.","招聘；招募","The company is recruiting new staff.","公司正在招聘新员工。"],["applicant","ˈæplɪkənt","n.","申请人","There are 200 applicants for the job.","有 200 人申请这份工作。"],["qualification","ˌkwɒlɪfɪˈkeɪʃn","n.","资格；资历","His qualifications are impressive.","他的资历令人印象深刻。"],["responsibility","rɪˌspɒnsəˈbɪləti","n.","责任；职责","She takes on more responsibility now.","她现在承担更多责任。"],["collaborate","kəˈlæbəreɪt","v.","合作；协作","We collaborate with teams abroad.","我们与海外团队合作。"],["supervise","ˈsuːpəvaɪz","v.","监督；管理","He supervises a team of five.","他管理一个五人团队。"],["promote","prəˈməʊt","v.","晋升；推广","She was promoted last month.","她上个月升职了。"],["flexible","ˈfleksəbl","adj.","灵活的","We need flexible working hours.","我们需要灵活的工作时间。"],["professional","prəˈfeʃənl","adj.","专业的；职业的","Keep a professional attitude.","保持专业的态度。"]],
+sts:[["Tell me about yourself briefly.","简单介绍一下你自己。","面试开场"],["What are your strengths and weaknesses?","你的优点和缺点是什么？","面试常见题"],["I am good at working under pressure.","我擅长在压力下工作。","be good at"],["The job requires strong communication skills.","这份工作需要很强的沟通能力。","require 需要"],["I look forward to hearing from you.","期待您的回复。","求职邮件结尾"]],
+gram:{t:'require + 宾语 / look forward to', pts:["require + 名词：The job requires skills.（这份工作需要技能。）","look forward to + 动名词：I look forward to working with you.（我期待与你共事。）","be good at + 动名词：擅长做某事。"],
+ex:[["The position requires three years of experience.","该职位要求三年经验。"],["We look forward to cooperating with you.","我们期待与您合作。"]]}},
+{id:'u5', no:'Unit 5', cn:'全球议题', en:'Global issues', tip:'用英语写一段 100 词的短文，论述一个全球议题（环保/教育/科技），含论点、论据、结论。',
+words:[["environment","ɪnˈvaɪrənmənt","n.","环境","We must protect the environment.","我们必须保护环境。"],["sustainable","səˈsteɪnəbl","adj.","可持续的","Sustainable energy is the future.","可持续能源是未来。"],["pollution","pəˈluːʃn","n.","污染","Air pollution harms our health.","空气污染危害健康。"],["climate","ˈklaɪmət","n.","气候","Climate change is a global challenge.","气候变化是全球性挑战。"],["resource","rɪˈsɔːs","n.","资源","Water is a precious resource.","水是宝贵资源。"],["poverty","ˈpɒvəti","n.","贫穷；贫困","Education can reduce poverty.","教育可以减轻贫困。"],["inequality","ˌɪnɪˈkwɒləti","n.","不平等","We should address social inequality.","我们应该解决社会不平等。"],["innovation","ˌɪnəˈveɪʃn","n.","创新","Innovation drives economic growth.","创新推动经济增长。"],["policy","ˈpɒləsi","n.","政策；方针","The new policy takes effect soon.","新政策很快生效。"],["impact","ˈɪmpækt","n.","影响；冲击","The project has a big impact on jobs.","这个项目对就业影响很大。"],["global","ˈɡləʊbl","adj.","全球的","We face global challenges together.","我们共同面对全球挑战。"],["solution","səˈluːʃn","n.","解决办法","There is no easy solution to this problem.","这个问题没有简单的解决办法。"]],
+sts:[["Climate change affects every country.","气候变化影响每个国家。","affect 影响"],["We need sustainable solutions now.","我们现在就需要可持续的解决方案。","need + 名词"],["The report highlights the risks of pollution.","报告强调了污染的风险。","highlight 强调"],["International cooperation is essential.","国际合作必不可少。","essential 必不可少"],["Small actions can make a big difference.","小行动也能带来大改变。","make a difference"]],
+gram:{t:'因果与影响表达', pts:["have an impact on：对……有影响：Technology has an impact on education.（科技对教育有影响。）","lead to / result in：导致；contribute to：有助于。","动名词作主语：Protecting the environment is everyone's duty.（保护环境是每个人的责任。）"],
+ex:[["Global warming leads to rising sea levels.","全球变暖导致海平面上升。"],["Recycling contributes to a cleaner city.","回收利用有助于城市更清洁。"]]}}
+]};
+/* ============ 数据：学习技巧教程 ============ */
+const TIPS = {
+primary:[
+{id:'pt1', tag:'拼读启蒙', mins:6, title:'自然拼读启蒙：见词能读的第一步', summary:'用 Phonics 把字母和发音对应起来，小学低年级就能“见词能读、听音能写”。',
+steps:[["先学 26 个字母音","字母的“读音”和“发音”是两回事：先掌握每个字母在单词里的常见发音，而不是只背字母表。"],["掌握五个短元音","a / e / i / o / u 在单词中的稳定发音：cat、bed、pig、dog、sun，读准这五个音是拼读的地基。"],["辅音+元音拼读","把辅音和元音拼起来读：c-a-t → cat，每天大声拼读 20 个词，形成口腔肌肉记忆。"],["常见字母组合","sh、ch、th、ee、oo 等组合发音有规律，用词卡配手势（如 th 伸舌）帮助记忆。"],["每天 10 分钟","从词卡到简单绘本，坚持三个月，拼读能力会有肉眼可见的进步。"]],
+cards:[["字母音歌诀","用唱儿歌的方式记字母音，节奏感能显著帮助记忆。"],["拼读金字塔","cat → hat → bat，只换首字母，一组一组滚动复习。"],["听音写词","家长读单词，孩子凭发音写出字母，训练音形对应能力。"]],
+practice:'每天选 5 个单词做“拼读小教练”：先拼出读音，再读三遍，最后用单词说一句话。'},
+{id:'pt2', tag:'音标入门', mins:7, title:'音标入门：48 个音素轻松认', summary:'音标是查词典、读准词的根本工具，先掌握“元音 20 + 辅音 28”的分类规律。',
+steps:[["认识 20 个元音","单元音 12 个 + 双元音 8 个。先练单元音：iː ɪ e æ ɑː ɒ ɔː uː ʊ ɜː ə ʌ，逐个对口型。"],["认识 28 个辅音","清浊成对记：p/b、t/d、k/g、f/v、s/z，清音不振动声带，浊音振动。"],["从拼音迁移","很多辅音和汉语拼音相似（b、p、m、f），但元音要重新听、重新模仿。"],["先读音标再读单词","查词典看音标，先拼读音标，再读整个单词，避免死记拼写。"],["每周自测","随机抽 10 个音标，能正确读出并写出例词，就算过关。"]],
+cards:[["元音表挂图","把 20 个元音贴在墙上，每天 3 分钟大声朗读。"],["最小对立练习","ship/sheep、man/men 对比辨音，训练耳朵的敏感度。"],["音标-单词配对","音标卡片和单词卡片打乱配对，限时完成。"]],
+practice:'每天大声朗读元音表两遍，注意口型到位、长短分明。'},
+{id:'pt3', tag:'趣味学习', mins:6, title:'玩着学：儿歌、游戏与场景记忆法', summary:'小学生注意力短，用儿歌、游戏和生活场景，让英语“玩”出来。',
+steps:[["儿歌跟唱","选 10 首经典英文儿歌（Twinkle Twinkle、ABC Song 等），先听再跟唱，磨耳朵又学词汇。"],["卡片游戏","单词卡玩“钓鱼”“接龙”“打地鼠”，输的人大声读单词。"],["场景角色扮演","超市、餐桌、动物园场景演练，让句子有真实的“使用场景”。"],["手工联动","做单词翻翻书、字母贴画，动手的过程加深记忆。"],["鼓励输出","孩子说错不打断，先肯定后纠正，保持开口的信心。"]],
+cards:[["儿歌清单","Twinkle Twinkle、ABC Song、Old MacDonald 等经典儿歌。"],["闪卡玩法","快速翻卡说单词，全家比反应速度。"],["家庭小剧场","周末全家演一个 3 分钟英语情景短剧。"]],
+practice:'本周选 1 首儿歌，每天听 2 遍并跟唱 1 遍，周末演给家人看。'},
+{id:'pt4', tag:'听说训练', mins:5, title:'听说优先：磨耳朵的正确打开方式', summary:'儿童语言习得靠“大量输入”，听说领先，读写自然跟上。',
+steps:[["固定英语时间","每天 15 分钟英语时间（早餐后或睡前），形成雷打不动的习惯。"],["可理解输入","选择 90% 能听懂的动画或儿歌，遇到生词猜意思而不是立刻查词。"],["跟读模仿","跟着原声一句一句模仿，注意语音、语调和停顿。"],["鼓励输出","鼓励孩子用英语描述看到的画面，哪怕只说一两个单词。"],["家长参与","和孩子一起学、一起说，把英语变成家庭日常。"]],
+cards:[["动画选择","Peppa Pig、Dora 等语速慢、词汇日常的素材。"],["磨耳朵黄金时间","起床、餐前、睡前的碎片时间都可以利用。"],["亲子问答","看动画时用英语问 What's this?，让孩子指物回答。"]],
+practice:'这周每天听同一集动画 2 遍，第 3 天开始试着跟读台词。'}
+],
+junior:[
+{id:'jt1', tag:'音标拼读', mins:8, title:'48 音标全攻略：拼读规律与易混音', summary:'初中是系统学音标的黄金期，掌握拼读规律后，词汇记忆效率翻倍。',
+steps:[["元音系统化","掌握长短元音配对：iː/ɪ、uː/ʊ、ɔː/ɒ、e/æ，长短音对照练习。"],["双元音口型滑动","eɪ、aɪ、ɔɪ、əʊ、aʊ、ɪə、eə、ʊə，发双元音时口型要“滑动”，从第一音滑向第二音。"],["清浊辅音对比","p/b、t/d、k/g、f/v、s/z、ʃ/ʒ、θ/ð 成对练习，用手摸喉部感受振动。"],["重音与弱读","双音节词重音多在第一个音节（table）；助动词、介词在句中常弱读。"],["连读与失去爆破","在句子里练 not at all、good night 等，让发音像母语者一样连贯。"]],
+cards:[["易混音对","ship/sheep、bed/bad、think/sink 对比表，贴墙每天过一遍。"],["重音规律","名词重音多在前（record 作名词/动词重音不同）。"],["音标打字","用音标输入法打单词，加深音形联系。"]],
+practice:'每天 10 分钟：用词典核对 5 个词的音标，大声朗读并录音对比。'},
+{id:'jt2', tag:'语法框架', mins:8, title:'语法框架：先建主干再添枝叶', summary:'初中语法是骨架，先抓“时态”和“句型”两大主干，再补细节。',
+steps:[["建五种基本句型","主谓、主谓宾、主系表、主谓双宾、主谓宾补，先把主干结构记牢。"],["时态时间轴","一般现在/过去/将来、现在进行、现在完成，画一条时间轴串起来。"],["从句入门","宾语从句、定语从句先学会“识别”，再学“使用”。"],["句型转换","肯定 → 否定 → 疑问三步转换，练到条件反射。"],["错题归类","每次作业错题按类型归类（时态/词性/搭配），周末重做一遍。"]],
+cards:[["时态时间轴","把 5 个核心时态画在时间轴上对照复习。"],["五句型表","每天默写一次基本句型框架。"],["转换三步法","找 be/助动词 → 加 not → 提前变疑问。"]],
+practice:'每周整理 10 道错题，标出错误类型，并口头给同学讲一遍解题思路。'},
+{id:'jt3', tag:'词汇记忆', mins:7, title:'单词记忆：艾宾浩斯与语境双轮驱动', summary:'单词不是“背”出来的，而是按遗忘规律复习 + 在语境里使用的结果。',
+steps:[["分组背词","每次 15 个左右，按主题（动物/学校/运动）或词根分组记忆。"],["音形义结合","读发音、看拼写、记含义，三个动作同时进行，缺一不可。"],["艾宾浩斯复习","第 1、2、4、7、15 天各复习一次，对抗遗忘曲线。"],["语境激活","用新词造句、朗读课文例句，让单词进入句子而不是孤立存在。"],["双向检测","遮住中文回忆英文，遮住英文回忆中文，检测才算真正记住。"]],
+cards:[["5 次复习节奏","当天 → 第2天 → 第4天 → 第7天 → 第15天。"],["词根词缀","积累 un-/re-/pre-、-tion、-ful 等常见前后缀，成串记词。"],["例句库","每个新词配 1 个自己的句子，朗读 3 遍。"]],
+practice:'每天背 15 个词，按 5 次复习节奏执行，周末做一次听写自测。'},
+{id:'jt4', tag:'综合能力', mins:7, title:'听说读写四步闭环：从输入到输出', summary:'听说读写互相促进，四个环节形成闭环循环，才能真正“会用”英语。',
+steps:[["听：精泛结合","课文精听三遍（抓大意→听细节→跟读），课外动画泛听磨耳朵。"],["说：每天开口","跟读课文、复述课文、看图说话，每天开口至少 10 分钟。"],["读：分级阅读","课外读物分级阅读，每天 10 分钟，划出生词和好句。"],["写：由抄到创","从抄写例句到看图写话，再到 80 词小短文，循序渐进。"],["四环循环","把新学的词句放进听说读写四个环节各用一次，彻底激活。"]],
+cards:[["精听三遍法","第一遍抓大意，第二遍听细节，第三遍逐句跟读。"],["复述模板","时间 + 地点 + 人物 + 事件，四要素复述小故事。"],["输出日记","每周写 3 篇英语小日记，每篇 3-5 句话。"]],
+practice:'本周用“精听三遍法”练 2 段课文，并用自己的话复述给家人听。'}
+],
+senior:[
+{id:'st1', tag:'长难句', mins:9, title:'长难句拆解：三步还原主谓宾', summary:'高中阅读失分多因长难句，学会“找主干、剥修饰、看从句”三步法。',
+steps:[["找谓语动词","一句话的核心是谓语，找到谓语（含时态标志）就找到了主干。"],["剥离修饰成分","把介词短语、非谓语、定语从句先圈出来放到一边。"],["还原主谓宾","主干 + 修饰一层层加回去，理解全句逻辑关系。"],["识别四大结构","定语从句、宾语从句、状语从句、非谓语，是长难句的四大常见套路。"],["刻意练习","每天拆解 2 个真题长难句，写出主谓宾和从句类型。"]],
+cards:[["谓语定位法","谓语动词 = 时态标志，先圈 be / do / have 类动词。"],["从句识别","that/which/who/where/why 引导词 + 从句充当的成分。"],["非谓语三态","doing / done / to do 各自充当定语、状语、宾语等成分。"]],
+practice:'每天从真题中拆解 2 个长难句，坚持 2 周，阅读速度明显提升。'},
+{id:'st2', tag:'阅读理解', mins:8, title:'阅读理解：定位、精读与猜词技巧', summary:'阅读题的本质是“定位 + 同义替换”，掌握方法比盲目刷题更重要。',
+steps:[["先题后文","先读题干和选项，圈出定位词（人名、数字、大写专有名词）。"],["回文比对","回原文找同义替换，警惕“偷换概念”“无中生有”的干扰项。"],["主旨看首尾","段落首句、文章首尾段承载主旨，主旨题优先在这些位置找答案。"],["猜词技巧","根据上下文线索（定义、举例、对比、因果）和构词法推断词义。"],["限时训练","每篇阅读控制在 6-7 分钟，先求准确再求速度。"]],
+cards:[["同义替换库","积累题干与原文的高频替换表达。"],["干扰项类型","无中生有、偷换概念、以偏概全、过度推断。"],["猜词线索","定义、举例、对比、因果四种上下文线索。"]],
+practice:'每周精做 3 篇阅读，每篇标出定位词、替换处和错误选项的类型。'},
+{id:'st3', tag:'书面表达', mins:8, title:'书面表达：从模板到思维升级', summary:'写作先解决“有话说”，再解决“说得好”，模板是拐杖而不是终点。',
+steps:[["审题列纲","先定体裁（书信/议论文/通知），再列三段提纲：开头、主体、结尾。"],["句式升级","简单句 → 定语从句、倒装、非谓语，每篇安排 2 个亮点句。"],["连接词串逻辑","firstly / moreover / however / in conclusion，让文章有清晰逻辑链。"],["范文仿写","先抄写背诵范文，再替换内容仿写，形成自己的模板。"],["自查清单","时态一致、主谓一致、拼写标点、字数达标，逐项检查。"]],
+cards:[["亮点句式","每篇至少 2 个高级句型，宁少勿错，确保用对。"],["连接词分级","基础连接词 → 高级连接词，分层积累。"],["背诵范文","每个话题背 1 篇 80-100 词的范文。"]],
+practice:'每周完整写 1 篇作文，按自查清单逐项打钩，改后重写一遍。'},
+{id:'st4', tag:'听力精听', mins:7, title:'听力精听法：影子跟读与听写训练', summary:'高考听力语速快、口音杂，精听 + 跟读是唯一可靠的提升路径。',
+steps:[["泛听热身","每天 15 分钟英语音频（新闻/播客）磨耳朵，培养语感。"],["精听三步","第一遍抓大意，第二遍逐句听写，第三遍对照原文订正。"],["影子跟读","比原声慢半拍跟读，训练语流、重音和反应速度。"],["考点预判","听前浏览题干，预判时间、地点、数字、人物关系等考点。"],["复盘错题","听错的句子反复听，分析是生词问题还是连读弱读问题。"]],
+cards:[["听写格式","短句听写、段落听写相结合，控制每次时长。"],["连读弱读","积累 at the、in a 等高频连读弱读现象。"],["数字敏感","专门训练时间、价格、电话号码的听力。"]],
+practice:'每周精听 2 段 1 分钟材料，逐句听写并跟读，记录进步曲线。'}
+],
+university:[
+{id:'ut1', tag:'学术英语', mins:9, title:'学术英语：从课堂到论文的表达升级', summary:'大学英语的关键是学术场景：听课、讨论、写作、汇报各有规范。',
+steps:[["课堂输入","lecture 前预习关键词，课上记结构笔记（主题-论点-例子-结论），课后回听。"],["学术词汇","掌握 AWL 学术词汇表的高频词根词缀，如 analyze、significant、evaluate。"],["学术写作结构","观点-证据-分析三段式，避免口语化和绝对化措辞。"],["引用规范","学会 paraphrase（改写）和正确引用，规避抄袭风险。"],["汇报表达","用 first / moreover / in conclusion 等信号词组织 presentation。"]],
+cards:[["AWL 词表","精学 570 个学术高频词，分 10 个子表推进。"],["论证结构","Claim-Evidence-Analysis 三段论证模型。"],["学术动词","argue / suggest / indicate / illustrate 等高频学术动词。"]],
+practice:'每周精读 1 篇英文论文摘要，标注学术词汇和论证结构。'},
+{id:'ut2', tag:'四六级备考', mins:8, title:'四六级备考：题型拆解与时间管理', summary:'四六级考的是“速度 + 精度”，按题型分配时间、专项突破。',
+steps:[["摸底定位","先做一套真题，找出最弱题型，确定主攻方向。"],["听力抢分","短对话/长对话/短文/讲座各有技巧，每天保持精听。"],["阅读提速","选词填空 8 分钟、匹配 12 分钟、精读 30 分钟，严格限时。"],["翻译套路","核心句式 + 主题词汇，直译为主、适当调整语序。"],["写作模板","背熟开头-正文-结尾框架，考前默写 5 篇不同话题。"]],
+cards:[["时间分配表","写作 30min、听力 30min、阅读 40min、翻译 30min。"],["高频主题词","环保、科技、教育、文化等主题词库。"],["真题复盘","每套真题做两遍，第二遍只做错题。"]],
+practice:'每周 1 套真题 + 每天 30 分钟专项训练，记录各题型正确率。'},
+{id:'ut3', tag:'口语进阶', mins:7, title:'口语进阶：从流利到有深度', summary:'口语不是背句子，而是练“思考 + 表达”的能力，输出倒逼输入。',
+steps:[["每日输出","每天用英语自言自语 5 分钟，描述所见所感。"],["话题库练习","教育、科技、社会热点等 20 个话题，每个话题练 3 次。"],["影子跟读","跟读 TED 演讲，模仿节奏和重音，练出语流。"],["结构化表达","用 PREP 模型（观点-理由-例子-重申）组织长回答。"],["真实对话","加入语伴群或英语角，每周至少 1 次真实对话。"]],
+cards:[["PREP 模型","Point-Reason-Example-Point 万能回答结构。"],["跟读选材","TED-Ed 3-5 分钟演讲，先慢速后常速。"],["录音回听","录下自己的回答，回听找卡顿和错误。"]],
+practice:'本周用 PREP 模型完整回答 3 个话题，各录音 1 遍并回听修改。'},
+{id:'ut4', tag:'自主学习', mins:6, title:'自主学习：语料库、播客与工具链', summary:'大学没人催你学，学会用工具和数据驱动自己持续进步。',
+steps:[["语料库查询","用 COCA / BNC 查搭配和用法，让表达有据可依。"],["播客输入","选择符合水平的英文播客，通勤时间泛听。"],["英英词典","用 Longman / Oxford 等英英词典，培养英语思维。"],["错题闭环","口语录音、写作批改、听力错题全部归档复盘。"],["目标管理","用周计划设定可量化的学习目标并打卡。"]],
+cards:[["播客推荐","按水平选 6 Minute English、TED、BBC 等。"],["英英词典","先看英英释义，再看例句，最后才看中文。"],["周计划模板","听说读写各 1 项 + 1 项自由任务。"]],
+practice:'本周用语料库验证 5 个不确定的搭配，写进学习笔记。'}
+]
+};
+
+/* ============ 数据：考试语法题库（按学段） ============ */
+const GRAM = {
+primary:[
+{q:"I ___ a student.", opts:["am","is","are"], a:0, why:"主语 I 用 am。"},
+{q:"She ___ my sister.", opts:["am","is","are"], a:1, why:"第三人称单数 she 用 is。"},
+{q:"___ you like apples?", opts:["Do","Does","Are","Is"], a:0, why:"主语 you 用助动词 Do 提问。"},
+{q:"This is ___ orange.", opts:["a","an","the","(不填)"], a:1, why:"orange 以元音音素开头，用 an。"},
+{q:"They ___ my friends.", opts:["am","is","are"], a:2, why:"复数主语 they 用 are。"},
+{q:"I have two ___.", opts:["cat","cats","cat's"], a:1, why:"two 后接复数名词 cats。"},
+{q:"Look ___ the bird in the tree.", opts:["at","on","in","to"], a:0, why:"look at 表示“看……”。"},
+{q:"___ colour is your bag?", opts:["What","How","Who","Where"], a:0, why:"询问颜色用 What colour。"},
+{q:"Can the bird ___?", opts:["flys","fly","flying","flies"], a:1, why:"can 后接动词原形 fly。"},
+{q:"There ___ three books on the desk.", opts:["is","are","am","be"], a:1, why:"three books 是复数，用 are。"}
+],
+junior:[
+{q:"He ___ to school every day.", opts:["go","goes","going","went"], a:1, why:"every day 表一般现在时，第三人称单数加 -es。"},
+{q:"I ___ my homework yesterday.", opts:["do","did","done","does"], a:1, why:"yesterday 表过去时，用 did。"},
+{q:"This book is ___ than that one.", opts:["more interesting","interesting","most interesting","interestinger"], a:0, why:"多音节形容词比较级用 more + 原级。"},
+{q:"She can ___ English very well.", opts:["speaks","speak","speaking","spoke"], a:1, why:"can 是情态动词，后接动词原形。"},
+{q:"The desk ___ of wood.", opts:["is made","makes","make","made"], a:0, why:"be made of 表示“由……制成”（看得出材质）。"},
+{q:"If it ___ tomorrow, we will stay at home.", opts:["rain","rains","rained","will rain"], a:1, why:"if 条件句用一般现在时表将来（主将从现）。"},
+{q:"There ___ some milk in the cup.", opts:["is","are","am","be"], a:0, why:"milk 是不可数名词，用 is。"},
+{q:"My mother ___ in a hospital.", opts:["work","works","working","worked"], a:1, why:"主语第三人称单数，一般现在时加 -s。"},
+{q:"— Where ___ you born? — In Beijing.", opts:["was","were","are","did"], a:1, why:"you 的过去时用 were。"},
+{q:"Li Lei runs ___ than Tom.", opts:["fast","faster","fastest","more fast"], a:1, why:"than 是比较级标志，fast → faster。"}
+],
+senior:[
+{q:"The book ___ cover is red is mine.", opts:["which","whose","that","where"], a:1, why:"whose 作定语修饰 cover，表示“封面是红色的那本书”。"},
+{q:"If I ___ you, I would take the job offer.", opts:["am","were","was","be"], a:1, why:"虚拟语气中 be 动词一律用 were。"},
+{q:"___ the news, he burst into tears.", opts:["Heard","Hearing","To hear","Hears"], a:1, why:"非谓语作状语，与主语是主动关系用 Hearing。"},
+{q:"It is important ___ English well.", opts:["learn","to learn","learning","learned"], a:1, why:"It is + adj. + to do sth. 固定结构。"},
+{q:"Not only he but also I ___ fond of music.", opts:["am","is","are","be"], a:0, why:"就近原则：离谓语最近的主语 I 决定 be 用 am。"},
+{q:"The reason ___ he was late is that he missed the bus.", opts:["why","which","what","that"], a:0, why:"reason 后接定语从句用关系副词 why。"},
+{q:"Hardly ___ he arrived when it began to rain.", opts:["had","has","have","was"], a:0, why:"Hardly...when 句型，主句用过去完成时，had 提前倒装。"},
+{q:"This is the village ___ I was born.", opts:["where","which","that","when"], a:0, why:"village 在从句中作地点状语，用 where。"},
+{q:"The meeting ___ for two hours when we arrived.", opts:["has been on","had been on","was on","is on"], a:1, why:"arrived 是过去时间，此前持续两小时用过去完成时。"},
+{q:"___ from the top, the city looks beautiful.", opts:["Seeing","Seen","To see","See"], a:1, why:"city 与 see 是被动关系，用过去分词 Seen。"}
+],
+university:[
+{q:"The professor's lecture ___ a wide range of topics.", opts:["covered","covering","cover","to cover"], a:0, why:"主语单数，一般过去时 covered 作谓语。"},
+{q:"___ from the data, the policy has been effective.", opts:["Judged","Judging","To judge","Judge"], a:1, why:"非谓语与逻辑主语是主动关系，用 Judging。"},
+{q:"Research indicates that ___ sleep is essential for memory.", opts:["adequate","adequately","adequate of","enough of"], a:0, why:"adequate 是形容词，修饰名词 sleep。"},
+{q:"The committee ___ of ten members.", opts:["consists","consist","is consisting","consisted"], a:0, why:"consist of 不用于进行时，主语三单用 consists。"},
+{q:"It is essential that every student ___ the regulations.", opts:["follows","follow","following","followed"], a:1, why:"essential + that 从句用虚拟语气（should）+ 动词原形。"},
+{q:"Her argument was ___ on solid evidence.", opts:["based","basing","base","bases"], a:0, why:"be based on 表示“基于……”。"},
+{q:"The study ___ that regular exercise reduces stress.", opts:["suggests","suggesting","suggest","suggested"], a:0, why:"主语 study 三单，一般现在时加 -s。"},
+{q:"In no case ___ give up halfway.", opts:["should we","we should","we can","do we"], a:0, why:"否定状语提前，句子部分倒装，情态动词提到主语前。"},
+{q:"The article ___ by Professor Li last year.", opts:["was written","wrote","is written","writing"], a:0, why:"被动语态过去时：was + 过去分词。"},
+{q:"___ the rapid development of AI, many jobs are changing.", opts:["With","By","In","Under"], a:0, why:"with + 名词短语表“随着……”。"}
+]
+};
+/* ============ 工具函数 ============ */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LVMap = id => LV.find(l => l.id === id);
+const unitWords = (lv, u) => UNITS[lv].find(x => x.id === u);
+const wordsCount = lv => UNITS[lv].reduce((s, u) => s + u.words.length, 0);
+const stsCount = lv => UNITS[lv].reduce((s, u) => s + u.sts.length, 0);
+function shuffle(a){ const r = a.slice(); for(let i=r.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [r[i],r[j]]=[r[j],r[i]]; } return r; }
+function pick(arr, n, except){ const pool = arr.filter(x => x !== except); return pool[Math.floor(Math.random()*pool.length)]; }
+
+/* ============ 图标库（内联 SVG） ============ */
+const ICONS = {
+logo:'<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7l3 3 3-3"/></svg>',
+play:'<svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>',
+vol:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>',
+book:'<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+cap:'<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>',
+pen:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>',
+chart:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+star:'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>',
+bookmark:'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>',
+search:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
+clock:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+target:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+trophy:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v6a5 5 0 0 1-10 0V4z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>',
+zap:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+layers:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
+mic:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
+check:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+x:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+arrowR:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+arrowL:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>',
+refresh:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>',
+trash:'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
+bulb:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10c1 1 1 2 1 3h6c0-1 0-2 1-3a6 6 0 0 0-4-10z"/></svg>',
+home:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+head:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>',
+eye:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+pen2:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>',
+settings:'<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>',
+flag:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>',
+doc:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+chevR:'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>'
+};
+function ico(n, cls){ const c = cls || 'ico'; return '<span class="'+c+'">'+(ICONS[n]||'')+'</span>'; }
+
+/* ============ 本地存储 ============ */
+const store = {
+  get(k, fb){ try{ const v = localStorage.getItem('els_'+k); return v ? JSON.parse(v) : fb; }catch(e){ return fb; } },
+  set(k, v){ try{ localStorage.setItem('els_'+k, JSON.stringify(v)); }catch(e){} }
+};
+const LS = {
+  learned: store.get('learned', {}),
+  favs: store.get('favs', []),
+  history: store.get('history', []),
+  voice: store.get('voice', {accent:'en-US', rate:0.95})
+};
+function saveLS(){ store.set('learned', LS.learned); store.set('favs', LS.favs); store.set('history', LS.history); store.set('voice', LS.voice); }
+const wKey = (lv, u, i) => lv + ':' + u + ':' + i;
+
+/* ============ 语音播放（浏览器 TTS） ============ */
+const TTS = {
+  speak(text, lang, rate){
+    if(!('speechSynthesis' in window)){ toast('当前浏览器不支持语音合成'); return; }
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang || 'en-US';
+    u.rate = (rate === undefined) ? LS.voice.rate : rate;
+    u.pitch = 1;
+    const v = pickVoice(u.lang); if(v) u.voice = v;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  },
+  en(text, rate){ this.speak(text, LS.voice.accent, rate); },
+  cn(text){ this.speak(text, 'zh-CN', 1); }
+};
+function pickVoice(lang){
+  if(!('speechSynthesis' in window)) return null;
+  const vs = speechSynthesis.getVoices(); if(!vs.length) return null;
+  const l = lang.toLowerCase();
+  return vs.find(v => v.lang.toLowerCase() === l)
+      || vs.find(v => v.lang.toLowerCase().startsWith(l.split('-')[0])) || null;
+}
+function playWord(lv, u, i){
+  const w = unitWords(lv, u).words[i];
+  TTS.en(w[0] + '. ' + w[4]);
+}
+function playS(lv, u, i){
+  const s = unitWords(lv, u).sts[i];
+  TTS.en(s[0]);
+}
+
+/* ============ 标记学习 / 收藏 ============ */
+function markLearned(lv, u, i){
+  const k = wKey(lv, u, i);
+  if(LS.learned[k]){ delete LS.learned[k]; toast('已取消“已学”标记'); }
+  else { LS.learned[k] = 1; toast('已标记为已学'); }
+  saveLS(); route();
+}
+function toggleFav(lv, u, i){
+  const w = unitWords(lv, u).words[i];
+  const k = wKey(lv, u, i);
+  const idx = LS.favs.findIndex(f => f.k === k);
+  if(idx >= 0){ LS.favs.splice(idx, 1); toast('已移出生词本'); }
+  else { LS.favs.unshift({k, lv, u, i, w: w.slice(0, 6)}); toast('已加入生词本'); }
+  saveLS(); route();
+}
+
+/* ============ 模态与提示 ============ */
+function openModal(html){
+  $('#modal-root').innerHTML = '<div class="modal-mask" onclick="if(event.target===this)closeModal()"><div class="modal">' + html + '</div></div>';
+}
+function closeModal(){ $('#modal-root').innerHTML = ''; }
+let toastTimer;
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+/* ============ 导航渲染 ============ */
+const NAV = [['home','首页'],['exam','模拟考试'],['dict','词典'],['tips','学习技巧'],['progress','学习进度']];
+function renderNav(){
+  $('#mainNav').innerHTML = NAV.map(n => '<a class="nav-item" data-r="'+n[0]+'" href="#/'+n[0]+'">'+n[1]+'</a>').join('');
+  $('#levelBar').innerHTML = LV.map(l =>
+    '<button class="lv-btn" data-lv="'+l.id+'" onclick="R.go(\'level/'+l.id+'\')">' +
+    '<span class="dot" style="background:'+l.c+'"></span>'+l.name+
+    '<small>'+(l.sub.split('·')[0]||'')+'</small></button>').join('');
+  document.querySelectorAll('[data-icon]').forEach(el => { el.innerHTML = ICONS[el.dataset.icon] || ''; });
+}
+function markNav(){
+  const p1 = R.parse()[0] || 'home';
+  const on = ['exam','dict','tips','progress'].indexOf(p1) >= 0 ? p1 : 'home';
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.r === on));
+  const lv = R.parse()[1] || '';
+  document.querySelectorAll('.lv-btn').forEach(b => b.classList.toggle('active', b.dataset.lv === lv));
+}
+
+/* ============ 视图：首页 ============ */
+function renderHome(){
+  const totalUnits = LV.reduce((s,l)=>s+UNITS[l.id].length,0);
+  const totalWords = LV.reduce((s,l)=>s+wordsCount(l.id),0);
+  const lvCards = LV.map(l => {
+    const u = UNITS[l.id].length, w = wordsCount(l.id);
+    return '<div class="card lvl-card" style="--lv:'+l.c+';--lv-d:'+l.cd+';--lv-soft:'+l.soft+'" onclick="R.go(\'level/'+l.id+'\')">' +
+      '<div class="lv-name" style="color:'+l.cd+'">'+l.name+'</div>' +
+      '<div class="lv-sub">'+l.sub+'</div>' +
+      '<div class="lv-book">'+l.book+'</div>' +
+      '<div class="lv-meta"><span>'+u+' 个单元</span><span>'+w+' 个核心词</span></div>' +
+      '<span class="lv-go">进入课程'+ico('arrowR')+'</span></div>';
+  }).join('');
+  const feats = [
+    ['vol','真人语音朗读','美音 / 英音切换，单词、例句、句型一键朗读，支持慢速跟读'],
+    ['pen','音标注音解读','每个单词都配国际音标、词性与中文释义，例句带全文翻译'],
+    ['layers','分级教材导航','小学 / 初中 / 高中 / 大学四学段课程，单元式系统学习'],
+    ['target','多难度模拟考试','基础 / 进阶 / 挑战三档试卷，自动评分、错题解析与成绩分析'],
+    ['bulb','学习技巧教程','16 篇分学段方法课：拼读、语法、阅读、听力、写作全覆盖'],
+    ['chart','学习进度追踪','已学词汇、考试历史、成绩趋势图表，学习成果看得见']
+  ].map(f => '<div class="card feat"><div class="f-ico">'+ico(f[0])+'</div><div><b>'+f[1]+'</b><p>'+f[2]+'</p></div></div>').join('');
+  const tl = LV.map((l,i) =>
+    '<div class="tl-row" style="--lv:'+l.c+';--lv-soft:'+l.soft+'">' +
+    '<div class="tl-time">'+l.span.split(' ')[0]+'</div>' +
+    '<div class="tl-axis"><span class="tl-dot"></span></div>' +
+    '<div class="tl-body"><b>'+l.name+' · '+l.sub.split('·')[1]+'</b><span>'+l.book+' — '+l.desc+'</span></div></div>').join('');
+  const tipCards = LV.map(l =>
+    '<div class="card tip-card" style="--lv:'+l.c+';--lv-d:'+l.cd+';--lv-soft:'+l.soft+'" onclick="R.go(\'tip/'+l.id+'/'+TIPS[l.id][0].id+'\')">' +
+    '<div class="tip-ico">'+ico('bulb')+'</div>' +
+    '<div class="tip-title">'+l.name+' · '+TIPS[l.id][0].title+'</div>' +
+    '<div class="tip-sum">'+TIPS[l.id][0].summary+'</div>' +
+    '<div class="tip-foot">'+ico('clock')+TIPS[l.id][0].mins+' 分钟读完 · '+TIPS[l.id][0].tag+'</div></div>').join('');
+  return '<section class="hero">' +
+    '<div><h1>小学到大学的英语课，<em>一站学通</em></h1>' +
+    '<p class="sub">分级教材 · 音标注音 · 中英对照 · 语音朗读 · 智能考试评分。四个学段的课程与学习技巧教程，从“认识字母”一路学到“学术英语”。</p>' +
+    '<div class="hero-cta"><button class="btn" onclick="R.go(\'level/primary\')">'+ico('book')+'从小学课程开始</button>' +
+    '<button class="btn btn-outline" onclick="R.go(\'exam\')">'+ico('target')+'去模拟考试</button></div>' +
+    '<div class="stats">' +
+    '<div class="stat"><b>'+totalUnits+'</b><span>教材单元</span></div>' +
+    '<div class="stat"><b>'+totalWords+'</b><span>核心词汇（含音标）</span></div>' +
+    '<div class="stat"><b>'+ (LV.length*3) +'</b><span>套模拟卷（3 档难度）</span></div>' +
+    '<div class="stat"><b>4 种</b><span>美音 / 英音 / 中文 / 慢速</span></div></div></div>' +
+    '<div class="ladder"><div class="l-title">你的英语学习阶梯</div>' +
+    '<div class="l-steps">' + LV.map((l,i) =>
+      '<div class="l-step"><span class="l-num" style="background:'+l.c+'">'+(i+1)+'</span><div><b>'+l.name+'</b><span>'+l.span+' · '+l.sub.split('·')[1]+'</span></div></div>').join('') +
+    '</div><div class="l-cap">'+ico('cap')+' 学完全部课程，即可覆盖从启蒙到四六级的核心英语能力</div></div>' +
+    '</section>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">课程教材</h2><span class="sec-sub">点击学段进入教材单元，或使用顶部导航栏切换</span></div>' +
+    '<div class="lvl-grid">'+lvCards+'</div></section>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">核心功能</h2><span class="sec-sub">语音、注音、考试、技巧一应俱全</span></div>' +
+    '<div class="feat-grid">'+feats+'</div></section>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">学习路径</h2><span class="sec-sub">从启蒙到学术，一步一步向上走</span></div>' +
+    '<div class="card" style="padding:22px 26px"><div class="tl">'+tl+'</div></div></section>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">学习技巧精选</h2><span class="sec-sub">每个学段都有配套的方法课</span></div>' +
+    '<div class="tip-grid">'+tipCards+'</div>' +
+    '<div style="margin-top:16px"><button class="btn btn-outline" onclick="R.go(\'tips\')">'+ico('layers')+'查看全部 16 篇技巧教程</button></div></section>';
+}
+
+/* ============ 视图：学段页 ============ */
+function renderLevel(levelId){
+  const l = LVMap(levelId); if(!l) return renderHome();
+  const units = UNITS[l.id];
+  const unitCards = units.map((u, i) => {
+    const wordsN = u.words.length, stsN = u.sts.length;
+    return '<div class="card unit-card">' +
+      '<div class="unit-top"><span class="unit-no" style="background:'+l.c+'">'+u.no.replace('Unit ','U')+'</span>' +
+      '<div><div class="unit-title">'+u.cn+'</div><div class="unit-en">'+u.en+'</div></div></div>' +
+      '<div class="unit-meta"><span>'+wordsN+' 个词汇</span><span>'+stsN+' 个句型</span></div>' +
+      '<div class="unit-actions">' +
+      '<button class="btn btn-sm" onclick="R.go(\'lesson/'+l.id+'/'+u.id+'\')">'+ico('book')+'开始学习</button>' +
+      '<button class="btn btn-sm btn-ghost" onclick="openFlashcard(\''+l.id+'\',\''+u.id+'\')">'+ico('zap')+'背单词</button>' +
+      '</div></div>';
+  }).join('');
+  const tips = TIPS[l.id].map(t =>
+    '<div class="card tip-card" style="--lv:'+l.c+';--lv-d:'+l.cd+';--lv-soft:'+l.soft+'" onclick="R.go(\'tip/'+l.id+'/'+t.id+'\')">' +
+    '<div class="tip-ico">'+ico('bulb')+'</div><div class="tip-title">'+t.title+'</div>' +
+    '<div class="tip-sum">'+t.summary+'</div>' +
+    '<div class="tip-foot">'+ico('clock')+t.mins+' 分钟 · <span class="badge amber">'+t.tag+'</span></div></div>').join('');
+  return '<div class="breadcrumb"><a href="#/home">首页</a>'+ico('chevR')+'<a href="#/level/'+l.id+'" style="color:var(--ink-2)">课程教材</a>'+ico('chevR')+'<span>'+l.name+'</span></div>' +
+    '<div class="card" style="padding:26px 28px;border-left:6px solid '+l.c+'">' +
+    '<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><h1 style="font-family:var(--serif);font-size:30px;font-weight:900;color:'+l.cd+'">'+l.name+'英语</h1>' +
+    '<span class="chip lv" style="background:'+l.c+'">'+l.sub.split('·')[1]+'</span></div>' +
+    '<p style="color:var(--ink-2);margin-top:10px;max-width:72ch">'+l.desc+'</p>' +
+    '<div class="chips" style="margin-top:14px">' +
+    '<span class="chip">教材：'+l.book+'</span><span class="chip">'+units.length+' 个单元</span><span class="chip">'+wordsCount(l.id)+' 个核心词</span><span class="chip">'+stsCount(l.id)+' 个重点句型</span></div>' +
+    '<div style="margin-top:18px"><button class="btn" onclick="S.examLevel=\''+l.id+'\';R.go(\'exam\')">'+ico('flag')+'本学段模拟考试</button>' +
+    '<button class="btn btn-ghost" style="margin-left:10px" onclick="R.go(\'tips/'+l.id+'\')">'+ico('bulb')+'学习技巧教程</button></div></div>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">教材单元</h2><span class="sec-sub">'+l.name+' · 共 '+units.length+' 个单元</span></div>' +
+    '<div class="unit-grid">'+unitCards+'</div></section>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">'+l.name+'学习技巧教程</h2><span class="sec-sub">方法对了，事半功倍</span></div>' +
+    '<div class="tip-grid">'+tips+'</div></section>';
+}
+
+/* ============ 视图：课程（单元）页 ============ */
+function renderLesson(levelId, unitId){
+  const l = LVMap(levelId), u = unitWords(levelId, unitId);
+  if(!l || !u) return renderLevel(levelId);
+  const ulist = UNITS[l.id];
+  const idx = ulist.findIndex(x => x.id === u.id);
+  const prev = idx > 0 ? ulist[idx-1] : null;
+  const next = idx < ulist.length-1 ? ulist[idx+1] : null;
+  const words = u.words.map((w, i) => {
+    const k = wKey(l.id, u.id, i);
+    const fav = LS.favs.some(f => f.k === k), done = !!LS.learned[k];
+    return '<div class="card word-card">' +
+      '<div class="w-top"><span class="w-word">'+w[0]+'</span><span class="w-ipa">/'+w[1]+'/</span>' +
+      '<button class="w-play" onclick="playWord(\''+l.id+'\',\''+u.id+'\','+i+')" title="朗读单词与例句">'+ico('vol')+'</button></div>' +
+      '<div class="w-pos">'+w[2]+'</div><div class="w-cn">'+w[3]+'</div>' +
+      '<div class="w-ex">'+w[4]+' <button class="w-play" style="width:24px;height:24px" onclick="playWordEx(\''+l.id+'\',\''+u.id+'\','+i+')" title="朗读例句">'+ico('play')+'</button></div>' +
+      '<div class="w-excn">'+w[5]+'</div>' +
+      '<div class="w-foot">' +
+      '<button class="mini-btn '+(fav?'on':'')+'" onclick="toggleFav(\''+l.id+'\',\''+u.id+'\','+i+')">'+ico('bookmark')+'收藏</button>' +
+      '<button class="mini-btn '+(done?'done':'')+'" onclick="markLearned(\''+l.id+'\',\''+u.id+'\','+i+')">'+ico('check')+'已学</button>' +
+      '</div></div>';
+  }).join('');
+  const sts = u.sts.map((s, i) =>
+    '<div class="s-row"><div class="s-en"><button class="s-play" onclick="playS(\''+l.id+'\',\''+u.id+'\','+i+')" title="朗读">'+ico('vol')+'</button>'+s[0]+
+    '<button class="mini-btn s-slow" onclick="playSSlow(\''+l.id+'\',\''+u.id+'\','+i+')" title="慢速跟读">'+ico('clock')+'慢速</button></div>' +
+    '<span class="badge amber s-note">'+s[2]+'</span>' +
+    '<div class="s-cn">'+s[1]+'</div></div>').join('');
+  const g = u.gram;
+  const pts = g.pts.map(p => '<li>'+p+'</li>').join('');
+  const gex = g.ex.map((e, gi) => '<div class="en">'+e[0]+'<button class="w-play" style="width:24px;height:24px" onclick="playGex(\''+l.id+'\',\''+u.id+'\','+gi+')">'+ico('play')+'</button></div><div class="cn">'+e[1]+'</div>').join('');
+  const pager = '<div class="pager">' + (prev ? '<button class="btn btn-ghost" onclick="R.go(\'lesson/'+l.id+'/'+prev.id+'\')">'+ico('arrowL')+'上一单元 · '+prev.cn+'</button>' : '<span></span>') +
+    (next ? '<button class="btn" onclick="R.go(\'lesson/'+l.id+'/'+next.id+'\')">下一单元 · '+next.cn+ico('arrowR')+'</button>' : '') + '</div>';
+  return '<div class="breadcrumb"><a href="#/home">首页</a>'+ico('chevR')+'<a href="#/level/'+l.id+'">'+l.name+'</a>'+ico('chevR')+'<span style="color:var(--ink-2)">'+u.no+' '+u.cn+'</span></div>' +
+    '<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">' +
+    '<span class="unit-no" style="width:46px;height:46px;border-radius:13px;display:grid;place-items:center;color:#fff;font-family:var(--num);font-weight:800;font-size:17px;background:'+l.c+'">'+u.no.replace('Unit ','U')+'</span>' +
+    '<div><h1 style="font-family:var(--serif);font-size:26px;font-weight:900">'+u.cn+'</h1><div style="color:var(--ink-3);font-family:var(--num)">'+u.en+'</div></div>' +
+    '<div style="margin-left:auto;display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-sm" onclick="openFlashcard(\''+l.id+'\',\''+u.id+'\')">'+ico('zap')+'闪卡背词</button></div></div>' +
+    '<div class="chips" style="margin-top:12px"><span class="chip">'+u.words.length+' 个核心词汇</span><span class="chip">'+u.sts.length+' 个重点句型</span><span class="chip lv" style="background:'+l.c+'">'+l.name+' · '+l.book+'</span></div>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">核心词汇</h2><span class="sec-sub">含音标、词性、中文释义与例句翻译，点喇叭跟读</span></div>' +
+    '<div class="word-grid">'+words+'</div></section>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">重点句型</h2><span class="sec-sub">常速朗读 + 慢速跟读 + 中文对照</span></div>' +
+    '<div>'+sts+'</div></section>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">语法解读</h2><span class="sec-sub">本单元语法要点，配中文讲解与例句</span></div>' +
+    '<div class="gram-card"><h3>'+ico('pen2')+g.t+'</h3><ul class="pts">'+pts+'</ul><div class="g-ex">'+gex+'</div></div></section>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">本课学习小贴士</h2><span class="sec-sub">来自学段方法课的实践建议</span></div>' +
+    '<div class="a-practice">'+ico('bulb')+' <b>试试看：</b>'+u.tip+'</div></section>' +
+    pager;
+}
+
+/* ============ 视图：技巧列表 ============ */
+function renderTipHome(){
+  return '<div class="breadcrumb"><a href="#/home">首页</a>'+ico('chevR')+'<span style="color:var(--ink-2)">学习技巧教程</span></div>' +
+    '<h1 style="font-family:var(--serif);font-size:30px;font-weight:900">学习技巧教程</h1>' +
+    '<p style="color:var(--ink-2);margin-top:8px;max-width:70ch">按学段匹配的 16 篇方法课：从小学的自然拼读、初中的语法框架，到高中的长难句拆解、大学的学术英语，每篇都给出可直接执行的分步方法和练习建议。</p>' +
+    LV.map(l => {
+      const cards = TIPS[l.id].map(t =>
+        '<div class="card tip-card" style="--lv:'+l.c+';--lv-d:'+l.cd+';--lv-soft:'+l.soft+'" onclick="R.go(\'tip/'+l.id+'/'+t.id+'\')">' +
+        '<div class="tip-ico">'+ico('bulb')+'</div><div class="tip-title">'+t.title+'</div>' +
+        '<div class="tip-sum">'+t.summary+'</div>' +
+        '<div class="tip-foot">'+ico('clock')+t.mins+' 分钟 · <span class="badge amber">'+t.tag+'</span></div></div>').join('');
+      return '<section class="sec"><div class="sec-head"><h2 class="sec-title" style="color:'+l.cd+'">'+l.name+'学段</h2><span class="sec-sub">'+l.sub+'</span></div>' +
+        '<div class="tip-grid">'+cards+'</div></section>';
+    }).join('');
+}
+function renderTipList(levelId){
+  const l = LVMap(levelId); if(!l) return renderTipHome();
+  const cards = TIPS[l.id].map(t =>
+    '<div class="card tip-card" style="--lv:'+l.c+';--lv-d:'+l.cd+';--lv-soft:'+l.soft+'" onclick="R.go(\'tip/'+l.id+'/'+t.id+'\')">' +
+    '<div class="tip-ico">'+ico('bulb')+'</div><div class="tip-title">'+t.title+'</div>' +
+    '<div class="tip-sum">'+t.summary+'</div>' +
+    '<div class="tip-foot">'+ico('clock')+t.mins+' 分钟 · <span class="badge amber">'+t.tag+'</span></div></div>').join('');
+  return '<div class="breadcrumb"><a href="#/home">首页</a>'+ico('chevR')+'<a href="#/tips">学习技巧</a>'+ico('chevR')+'<span style="color:var(--ink-2)">'+l.name+'</span></div>' +
+    '<h1 style="font-family:var(--serif);font-size:28px;font-weight:900;color:'+l.cd+'">'+l.name+' · 学习技巧教程</h1>' +
+    '<p style="color:var(--ink-2);margin-top:8px;max-width:70ch">'+l.desc+'</p>' +
+    '<div class="tip-grid" style="margin-top:20px">'+cards+'</div>';
+}
+function renderTip(levelId, tipId){
+  const l = LVMap(levelId), t = TIPS[l.id] ? TIPS[l.id].find(x => x.id === tipId) : null;
+  if(!l || !t) return renderTipHome();
+  const steps = t.steps.map(s => '<div class="a-step"><b>'+s[0]+'</b><p>'+s[1]+'</p></div>').join('');
+  const cards = t.cards.map(c => '<div class="a-card"><b>'+c[0]+'</b><p>'+c[1]+'</p></div>').join('');
+  const list = TIPS[l.id];
+  const idx = list.findIndex(x => x.id === t.id);
+  const prev = idx > 0 ? list[idx-1] : null, next = idx < list.length-1 ? list[idx+1] : null;
+  return '<div class="article"><div class="breadcrumb"><a href="#/home">首页</a>'+ico('chevR')+'<a href="#/tips/'+l.id+'">'+l.name+'技巧</a>'+ico('chevR')+'<span style="color:var(--ink-2)">'+t.tag+'</span></div>' +
+    '<div class="card article-head" style="--lv:'+l.c+'">' +
+    '<span class="badge amber">'+t.tag+'</span><span class="badge green">'+l.name+'学段</span><span class="badge blue">'+ico('clock')+' '+t.mins+' 分钟</span>' +
+    '<h1>'+t.title+'</h1><div class="tip-sum">'+t.summary+'</div></div>' +
+    '<div class="a-sec"><h2><span class="n">1</span>分步方法</h2><div class="a-steps">'+steps+'</div></div>' +
+    '<div class="a-sec"><h2><span class="n">2</span>要点卡片</h2><div class="a-cards">'+cards+'</div></div>' +
+    '<div class="a-sec"><h2><span class="n">3</span>本周练习</h2><div class="a-practice">'+ico('target')+' <b>行动项：</b>'+t.practice+'</div></div>' +
+    '<div class="pager">' + (prev ? '<button class="btn btn-ghost" onclick="R.go(\'tip/'+l.id+'/'+prev.id+'\')">'+ico('arrowL')+'上一篇</button>' : '') +
+    (next ? '<button class="btn" onclick="R.go(\'tip/'+l.id+'/'+next.id+'\')">下一篇'+ico('arrowR')+'</button>' : '<button class="btn btn-ghost" onclick="R.go(\'tips/'+l.id+'\')">'+ico('layers')+'返回'+l.name+'技巧列表</button>') + '</div></div>';
+}
+/* ============ 视图：模拟考试 ============ */
+const DIFF = {
+  basic:{name:'基础', count:10, mix:{hear:3, ec:4, ce:3, gram:0, spell:0}, desc:'单词巩固 · 以听音选义和英汉互译为主'},
+  advanced:{name:'进阶', count:15, mix:{hear:3, ec:3, ce:3, gram:3, spell:3}, desc:'综合运用 · 加入语法单选与拼写填空'},
+  challenge:{name:'挑战', count:18, mix:{hear:4, ec:3, ce:3, gram:4, spell:4}, desc:'限时冲刺 · 全题型覆盖，检验综合能力'}
+};
+const QTYPE = {
+  hear:['听力选择','blue','听录音选词义'],
+  ec:['英译中','green','选出正确中文释义'],
+  ce:['中译英','amber','选出正确英文单词'],
+  gram:['语法单选','violet','选择最佳答案'],
+  spell:['拼写填空','coral','根据释义和音标拼写']
+};
+function renderExam(){
+  if(S.exam && S.exam.mode === 'taking') return renderTaking();
+  if(S.exam && S.exam.mode === 'result') return renderResult();
+  const selLv = S.examLevel || 'junior';
+  const selDiff = S.examDiff || 'basic';
+  const lvCards = LV.map(l =>
+    '<button class="card lvl-card" style="--lv:'+l.c+';--lv-d:'+l.cd+';--lv-soft:'+l.soft+(selLv===l.id?';border-color:'+l.c+';background:'+l.soft:'')+'" onclick="S.examLevel=\''+l.id+'\';renderExam()">' +
+    '<div class="lv-name" style="color:'+l.cd+'">'+l.name+'</div><div class="lv-sub">'+l.sub+'</div>' +
+    '<div class="lv-meta"><span>'+UNITS[l.id].length+' 单元</span><span>'+wordsCount(l.id)+' 词</span></div>' +
+    '<span class="lv-go" style="color:'+(selLv===l.id?l.cd:'var(--ink-3)')+'">'+(selLv===l.id?'已选中'+ico('check'):'选择本学段')+'</span></button>').join('');
+  const seg = Object.keys(DIFF).map(d =>
+    '<button class="'+(selDiff===d?'on':'')+'" onclick="S.examDiff=\''+d+'\';renderExam()"><b>'+DIFF[d].name+'</b> · '+DIFF[d].count+'题</button>').join('');
+  const d = DIFF[selDiff];
+  const rules = [['hear',d.mix.hear],['ec',d.mix.ec],['ce',d.mix.ce],['gram',d.mix.gram],['spell',d.mix.spell]].filter(x=>x[1]>0)
+    .map(x => '<span class="chip">'+QTYPE[x[0]][0]+' ×'+x[1]+'</span>').join('');
+  return '<div class="breadcrumb"><a href="#/home">首页</a>'+ico('chevR')+'<span style="color:var(--ink-2)">模拟考试</span></div>' +
+    '<h1 style="font-family:var(--serif);font-size:30px;font-weight:900">模拟考试</h1>' +
+    '<p style="color:var(--ink-2);margin-top:8px;max-width:70ch">选择学段与难度，系统自动组卷：含听力、英汉互译、语法单选与拼写填空，交卷后自动评分并生成错题解析与成绩分析。</p>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">① 选择学段</h2></div>' +
+    '<div class="lvl-grid">'+lvCards+'</div></section>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">② 选择难度</h2><span class="sec-sub">'+d.desc+'</span></div>' +
+    '<div class="card ex-step"><div class="seg">'+seg+'</div>' +
+    '<div class="chips" style="margin-top:14px"><span class="chip">'+selLvName()+' · '+DIFF[selDiff].name+'卷</span>'+rules+'</div>' +
+    '<div style="margin-top:20px"><button class="btn" onclick="startExam()">'+ico('flag')+'开始考试</button>' +
+    '<span style="margin-left:12px;font-size:13px;color:var(--ink-3)">交卷后自动评分，成绩将保存到学习进度</span></div></div></section>';
+}
+function selLvName(){ return LVMap(S.examLevel || 'junior').name; }
+
+function renderTaking(){
+  const e = S.exam; const q = e.questions[e.ti];
+  const l = LVMap(e.levelId); const d = DIFF[e.diff];
+  const answered = e.answers.filter(a => a !== null && a !== undefined && a !== '').length;
+  const pct = Math.round((e.ti + (e.answers[e.ti]!==null&&e.answers[e.ti]!==''?1:0)) / e.questions.length * 100);
+  let body = '';
+  if(q.type === 'hear' || q.type === 'ec' || q.type === 'ce' || q.type === 'gram'){
+    const opts = q.opts.map((o, i) => {
+      const sel = e.answers[e.ti] === i;
+      return '<button class="q-opt '+(sel?'sel':'')+'" onclick="answerQ('+i+')"><span class="k">'+String.fromCharCode(65+i)+'</span>'+esc(o)+(sel?ico('check','ck'):'')+'</button>';
+    }).join('');
+    if(q.type === 'hear'){
+      body = '<span class="q-type" style="background:'+l.c+'">'+ico('head')+' '+QTYPE.hear[0]+' · 点击播放，听单词选词义</span>' +
+        '<div class="q-stem"><button class="btn btn-sm btn-outline" onclick="playQWord()">'+ico('vol')+'播放 / 重听</button><span class="q-word">'+esc(q.word[0])+'</span><span class="q-ipa">/'+esc(q.word[1])+'/</span></div>';
+    } else if(q.type === 'ec'){
+      body = '<span class="q-type" style="background:'+l.c+'">'+ico('eye')+' '+QTYPE.ec[0]+' · 选出中文释义</span>' +
+        '<div class="q-stem"><button class="btn btn-sm btn-outline" onclick="playQWord()">'+ico('vol')+'朗读</button><span class="q-word">'+esc(q.word[0])+'</span><span class="q-ipa">/'+esc(q.word[1])+'/</span><span class="badge green">'+esc(q.word[2])+'</span></div>';
+    } else if(q.type === 'ce'){
+      body = '<span class="q-type" style="background:'+l.c+'">'+ico('pen')+' '+QTYPE.ce[0]+' · 选出对应英文</span>' +
+        '<div class="q-stem"><span style="font-size:20px;font-weight:800;color:var(--amber-d)">'+esc(q.word[3])+'</span><span class="badge amber">'+esc(q.word[2])+'</span></div>';
+    } else {
+      body = '<span class="q-type" style="background:'+l.c+'">'+ico('pen2')+' '+QTYPE.gram[0]+'</span>' +
+        '<div class="q-stem"><span class="q-word" style="font-size:18px">'+esc(q.q)+'</span></div>';
+    }
+    body += '<div class="q-opts">'+opts+'</div>';
+  } else {
+    body = '<span class="q-type" style="background:'+l.c+'">'+ico('pen')+' '+QTYPE.spell[0]+' · 根据释义拼写单词</span>' +
+      '<div class="q-stem"><span style="font-size:20px;font-weight:800;color:var(--green-d)">'+esc(q.word[3])+'</span><span class="q-ipa">/'+esc(q.word[1])+'/</span><span class="badge green">'+esc(q.word[2])+'</span></div>' +
+      '<div class="q-input"><input id="spellInput" placeholder="输入英文单词…" autocomplete="off" autocapitalize="off" spellcheck="false" value="'+(typeof e.answers[e.ti]==='string'?esc(e.answers[e.ti]):'')+'" onkeydown="if(event.key===\'Enter\')checkSpell()">' +
+      '<button class="btn btn-sm" onclick="checkSpell()">'+ico('check')+'确定</button></div>';
+  }
+  return '<div class="breadcrumb"><a href="#/home">首页</a>'+ico('chevR')+'<span style="color:var(--ink-2)">模拟考试</span></div>' +
+    '<div class="card ex-step"><div class="ex-head">' +
+    '<span class="chip lv" style="background:'+l.c+'">'+l.name+'</span><span class="chip">'+d.name+'难度</span>' +
+    '<span class="badge '+(e.questions[e.ti].type==='gram'?'blue':e.questions[e.ti].type==='spell'?'coral':'green')+'">'+(e.ti+1)+' / '+e.questions.length+'</span>' +
+    '<div class="ex-meta"><span>'+ico('clock')+'<b id="examTimer">00:00</b></span><span>已答 '+answered+' 题</span></div></div>' +
+    '<div class="ex-progress"><i style="width:'+pct+'%"></i></div>' +
+    '<div class="q-card">'+body+'</div>' +
+    '<div class="q-nav"><button class="btn btn-sm btn-ghost" '+(e.ti===0?'disabled':'')+' onclick="S.exam.ti--;renderTaking()">'+ico('arrowL')+'上一题</button>' +
+    '<button class="btn btn-sm btn-ghost" '+(e.ti>=e.questions.length-1?'disabled':'')+' onclick="S.exam.ti++;renderTaking()">下一题'+ico('arrowR')+'</button>' +
+    '<button class="btn btn-sm" style="margin-left:auto" onclick="submitExam()">'+ico('check')+'交卷评分（已答 '+answered+'/'+e.questions.length+'）</button></div></div>';
+}
+function e(){ return S.exam; }
+
+function renderResult(){
+  const e = S.exam, r = e.result;
+  const l = LVMap(e.levelId), d = DIFF[e.diff];
+  const pct = Math.round(r.correct / e.questions.length * 100);
+  const grade = pct >= 90 ? '优秀' : pct >= 75 ? '良好' : pct >= 60 ? '及格' : '继续加油';
+  const gradeColor = pct >= 90 ? 'var(--green)' : pct >= 75 ? 'var(--blue)' : pct >= 60 ? 'var(--amber)' : 'var(--coral)';
+  const bars = Object.keys(r.perType).map(t =>
+    '<div class="bar-row"><span>'+QTYPE[t][0]+'</span><div class="b-track"><i style="width:'+(r.perType[t].n?Math.round(r.perType[t].c/r.perType[t].n*100):0)+'%"></i></div><b>'+r.perType[t].c+'/'+r.perType[t].n+'</b></div>').join('');
+  const wrongs = r.wrongs.map(w => {
+    const stem = w.type==='gram' ? w.q : w.type==='spell' ? (w.cn+' / '+w.ipa) : (w.type==='hear'?'【听力】'+w.word : (w.type==='ec'?w.word+' '+w.ipa : w.cn));
+    const your = w.type==='spell' ? (w.your||'（未作答）') : w.your!==undefined ? w.opts[w.your] : '（未作答）';
+    const correct = w.type==='spell' ? w.word : w.opts[w.ans];
+    return '<div class="wrong-item"><div class="wi-q">'+ico('x')+'<span>'+esc(stem)+'</span></div>' +
+      '<div class="wi-a"><span class="bad">你的答案：'+esc(your)+'</span>　<span class="good">正确答案：'+esc(correct)+'</span></div>' +
+      '<div class="wi-why">'+esc(w.why||'')+'</div></div>';
+  }).join('');
+  return '<div class="breadcrumb"><a href="#/home">首页</a>'+ico('chevR')+'<span style="color:var(--ink-2)">考试结果</span></div>' +
+    '<div class="card ex-step" style="text-align:center">' +
+    '<div style="display:flex;gap:34px;align-items:center;justify-content:center;flex-wrap:wrap">' +
+    '<div style="--p:'+pct+';width:150px;height:150px;border-radius:50%;display:grid;place-items:center;background:conic-gradient('+gradeColor+' '+pct+'%, var(--line-2) 0)"><div style="width:118px;height:118px;border-radius:50%;background:var(--surface);display:grid;place-items:center"><div><b style="font-family:var(--num);font-size:36px;font-weight:800;color:'+gradeColor+'">'+pct+'</b><div style="font-size:12px;color:var(--ink-3);text-align:center">分</div></div></div></div>' +
+    '<div style="text-align:left"><div class="res-grade" style="color:'+gradeColor+'">'+grade+'</div>' +
+    '<div style="color:var(--ink-2);margin-top:6px">'+l.name+' · '+d.name+'难度 · 满分 100 分</div>' +
+    '<div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">' +
+    '<button class="btn" onclick="restartExam()">'+ico('refresh')+'重考一套</button>' +
+    '<button class="btn btn-outline" onclick="S.exam=null;renderExam()">'+ico('pen2')+'换个难度</button>' +
+    '<button class="btn btn-ghost" onclick="R.go(\'progress\')">'+ico('chart')+'查看进度</button></div></div></div>' +
+    '<div class="result-grid">' +
+    '<div class="res-stat"><b>'+r.correct+' / '+e.questions.length+'</b><span>答对题数</span></div>' +
+    '<div class="res-stat"><b>'+r.sec+'s</b><span>答题用时</span></div>' +
+    '<div class="res-stat"><b>'+r.wrongs.length+'</b><span>错题数</span></div>' +
+    '<div class="res-stat"><b style="color:var(--blue)">'+Math.round(r.correct/e.questions.length*100)+'%</b><span>正确率</span></div></div></div>' +
+    '<div class="card ex-step" style="margin-top:16px"><h2 class="sec-title" style="font-size:17px">分题型表现</h2><div class="bars">'+bars+'</div>' +
+    '<div id="radarChart" class="chart-box" style="height:250px;margin-top:6px"></div></div>' +
+    '<div class="card ex-step" style="margin-top:16px"><h2 class="sec-title" style="font-size:17px;color:var(--coral)">错题解析</h2>' +
+    (r.wrongs.length ? '<div class="wrong-list">'+wrongs+'</div>' : '<div class="empty" style="margin-top:12px"><b>全部答对</b>太棒了，继续保持！</div>') + '</div>';
+}
+
+/* ============ 视图：词典 / 生词本 ============ */
+function allWords(){
+  if(S._all) return S._all;
+  const out = [];
+  LV.forEach(l => UNITS[l.id].forEach(u => u.words.forEach((w,i) => out.push({lv:l.id, u:u.id, i, w, k:wKey(l.id,u.id,i)}))));
+  S._all = out; return out;
+}
+function renderDict(){
+  const q = (S.dictQ || '').trim().toLowerCase();
+  const flt = S.dictFlt || 'all';
+  let list = allWords().filter(x => (flt==='all' || x.lv===flt));
+  if(q) list = list.filter(x => x.w[0].toLowerCase().indexOf(q)>=0 || x.w[3].indexOf(S.dictQ.trim())>=0 || x.w[1].indexOf(S.dictQ.trim())>=0);
+  if(!q) list = list.slice(0, 28);
+  const rows = dictRowsHtml(list);
+  const favRows = LS.favs.map(f => {
+    const l = LVMap(f.lv);
+    return '<div class="card dict-row">' +
+      '<div class="d-word">'+f.w[0]+'<span class="d-ipa">/'+f.w[1]+'/</span><span class="chip lv" style="background:'+l.c+'">'+l.name+'</span></div>' +
+      '<div class="d-cn">'+f.w[3]+'</div>' +
+      '<div class="d-ex">'+f.w[4]+'</div><div class="d-excn">'+f.w[5]+'</div>' +
+      '<div class="d-acts"><button class="mini-btn" onclick="playWord(\''+f.lv+'\',\''+f.u+'\','+f.i+')">'+ico('vol')+'</button>' +
+      '<button class="mini-btn" onclick="LS.favs=LS.favs.filter(x=>x.k!==\''+f.k+'\');saveLS();renderDict()">'+ico('trash')+'</button></div></div>';
+  }).join('');
+  const tabs = ['all'].concat(LV.map(l=>l.id)).map(t => {
+    const name = t==='all' ? '全部' : LVMap(t).name;
+    return '<button class="dict-tab '+(flt===t?'on':'')+'" onclick="S.dictFlt=\''+t+'\';renderDict()">'+name+'</button>';
+  }).join('');
+  return '<div class="breadcrumb"><a href="#/home">首页</a>'+ico('chevR')+'<span style="color:var(--ink-2)">词典 / 生词本</span></div>' +
+    '<h1 style="font-family:var(--serif);font-size:30px;font-weight:900">词典</h1>' +
+    '<p style="color:var(--ink-2);margin-top:8px">内置 '+allWords().length+' 个教材核心词，支持中英互查、音标、例句与朗读。查到的词可一键收藏进生词本或标记已学。</p>' +
+    '<div class="dict-search"><span style="color:var(--ink-3);align-self:center">'+ico('search')+'</span><input id="dictInput" placeholder="输入英文、中文或音标进行查询…" value="'+esc(S.dictQ||'')+'" oninput="S.dictQ=this.value;dictRefresh()"></div>' +
+    '<div class="dict-tabs">'+tabs+'</div>' +
+    '<div id="dictRes">'+rows+'</div>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">我的生词本</h2><span class="sec-sub">'+LS.favs.length+' 个收藏词</span></div>' +
+    (favRows ? '<div class="dict-results">'+favRows+'</div>' : '<div class="empty"><b>生词本是空的</b>在课程页或词典中点击“收藏”，单词会出现在这里</div>') + '</section>';
+}
+
+/* ============ 视图：学习进度 ============ */
+function renderProgress(){
+  const hist = LS.history.slice().reverse();
+  const learnedN = Object.keys(LS.learned).length;
+  const avg = hist.length ? Math.round(hist.reduce((s,h)=>s+h.score,0)/hist.length) : null;
+  const histRows = hist.map(h => {
+    const l = LVMap(h.levelId), d = DIFF[h.diff];
+    const dt = new Date(h.date);
+    const ds = (dt.getMonth()+1)+'-'+dt.getDate()+' '+(dt.getHours()<10?'0':'')+dt.getHours()+':'+(dt.getMinutes()<10?'0':'')+dt.getMinutes();
+    return '<div class="hist-row"><span class="h-date">'+ds+'</span>' +
+      '<span class="h-tag">'+l.name+' · '+d.name+'难度</span><span class="h-score" style="color:'+(h.score>=90?'var(--green)':h.score>=60?'var(--amber)':'var(--coral)')+'">'+h.score+' 分</span></div>';
+  }).join('');
+  const learnedPerLv = LV.map(l => { let n = 0; UNITS[l.id].forEach(u => u.words.forEach((w,i)=>{ if(LS.learned[wKey(l.id,u.id,i)]) n++; })); return n; });
+  return '<div class="breadcrumb"><a href="#/home">首页</a>'+ico('chevR')+'<span style="color:var(--ink-2)">学习进度</span></div>' +
+    '<h1 style="font-family:var(--serif);font-size:30px;font-weight:900">学习进度</h1>' +
+    '<p style="color:var(--ink-2);margin-top:8px">已学词汇、考试记录与成绩趋势都在这里，数据保存在本机浏览器。</p>' +
+    '<div class="pstat-grid" style="margin-top:18px">' +
+    '<div class="card pstat"><b>'+learnedN+'</b><span>已学词汇</span></div>' +
+    '<div class="card pstat"><b>'+LS.favs.length+'</b><span>生词本收藏</span></div>' +
+    '<div class="card pstat"><b>'+hist.length+'</b><span>考试次数</span></div>' +
+    '<div class="card pstat"><b>'+ (avg===null?'—':avg) +'</b><span>平均成绩（分）</span></div></div>' +
+    '<div class="grid" style="grid-template-columns:1.2fr 1fr;margin-top:16px">' +
+    '<div class="card ex-step"><h2 class="sec-title" style="font-size:16px">成绩趋势</h2><div id="lineChart" class="chart-box"></div></div>' +
+    '<div class="card ex-step"><h2 class="sec-title" style="font-size:16px">已学词汇分布</h2><div id="barChart" class="chart-box"></div></div></div>' +
+    '<section class="sec"><div class="sec-head"><h2 class="sec-title">考试记录</h2><span class="sec-sub">'+hist.length+' 次</span></div>' +
+    (histRows ? histRows : '<div class="empty"><b>还没有考试记录</b>去 <a href="#/exam" style="color:var(--green);font-weight:700">模拟考试</a> 完成第一套试卷吧</div>') + '</section>';
+}
+
+/* ============ 闪卡背词 ============ */
+function openFlashcard(levelId, unitId){
+  const u = unitWords(levelId, unitId); if(!u) return;
+  const l = LVMap(levelId);
+  S.fc = {lv: levelId, u: unitId, list: shuffle(u.words.map((w,i)=>i)), i: 0, known: 0};
+  renderFlashcard();
+}
+function renderFlashcard(){
+  const fc = S.fc; if(!fc) return;
+  const u = unitWords(fc.lv, fc.u); const l = LVMap(fc.lv);
+  const i = fc.list[fc.i];
+  const w = u.words[i];
+  const k = wKey(fc.lv, fc.u, i);
+  const fav = LS.favs.some(f => f.k === k);
+  const done = fc.i >= fc.list.length;
+  let inner;
+  if(done){
+    inner = '<div style="text-align:center;padding:30px 0"><div style="font-family:var(--serif);font-size:26px;font-weight:900;color:var(--green-d)">本轮完成！</div>' +
+      '<div style="color:var(--ink-2);margin-top:8px">认识 '+fc.known+' / '+fc.list.length+' 个单词</div>' +
+      '<div class="fc-acts"><button class="btn" onclick="openFlashcard(\''+fc.lv+'\',\''+fc.u+'\')">'+ico('refresh')+'再来一轮</button>' +
+      '<button class="btn btn-ghost" onclick="closeModal()">'+ico('check')+'完成</button></div></div>';
+  } else {
+    inner = '<div class="fc-card" onclick="flipCard()">' +
+      '<div class="fc-hint">'+(fc.flipped?'点击卡片回到正面':'点击卡片查看释义')+'</div>' +
+      (fc.flipped
+        ? '<div><div class="fc-cn">'+w[3]+'</div><div class="fc-pos" style="font-size:13px;color:var(--ink-3);margin-top:6px">'+w[2]+'</div>' +
+          '<div class="fc-ex">'+w[4]+'</div><div class="fc-excn">'+w[5]+'</div></div>'
+        : '<div><div class="fc-word">'+w[0]+'</div><div class="fc-ipa">/'+w[1]+'/</div></div>') +
+      '</div>' +
+      '<div class="fc-acts">' +
+      '<button class="btn btn-ghost" onclick="fcNext(false)">'+ico('x')+'不认识</button>' +
+      '<button class="btn" onclick="fcNext(true)">'+ico('check')+'认识</button>' +
+      '<button class="btn btn-outline" onclick="playWordOnly(\''+fc.lv+'\',\''+fc.u+'\','+i+')">'+ico('vol')+'</button>' +
+      '<button class="btn btn-outline '+(fav?'':'')+'" style="'+(fav?'background:var(--amber-soft);color:var(--amber-d)':'')+'" onclick="toggleFav(\''+fc.lv+'\',\''+fc.u+'\','+i+');renderFlashcard()">'+ico('bookmark')+'</button></div>' +
+      '<div class="fc-prog"><span>'+(fc.i+1)+' / '+fc.list.length+'</span><div class="fc-track"><i style="width:'+Math.round((fc.i+1)/fc.list.length*100)+'%"></i></div><span>认识 '+fc.known+'</span></div>';
+  }
+  openModal('<div class="modal-head"><span class="modal-title">'+u.no+' '+u.cn+' · 闪卡背词</span><span class="badge green" style="margin-left:6px">'+l.name+'</span>' +
+    '<button class="modal-x" onclick="closeModal()">'+ico('x')+'</button></div>' +
+    '<div class="modal-body">'+inner+'</div>');
+}
+function flipCard(){ if(S.fc){ S.fc.flipped = !S.fc.flipped; renderFlashcard(); } }
+function fcNext(known){
+  const fc = S.fc; if(!fc) return;
+  if(known){ fc.known++; markLearnedRaw(fc.lv, fc.u, fc.list[fc.i]); }
+  fc.i++; fc.flipped = false;
+  renderFlashcard();
+}
+function markLearnedRaw(lv,u,i){ const k = wKey(lv,u,i); LS.learned[k]=1; saveLS(); }
+
+/* ============ 发音设置 ============ */
+function openSettings(){
+  const acc = LS.voice.accent, rate = LS.voice.rate;
+  const accSeg = [['en-US','美音'],['en-GB','英音']].map(a => '<button class="'+(acc===a[0]?'on':'')+'" onclick="LS.voice.accent=\''+a[0]+'\';saveLS();openSettings()">'+a[1]+'</button>').join('');
+  const rateSeg = [[0.65,'慢速'],['0.95','常速'],[1.15,'快速']].map(r => {
+    const v = r[0]==='0.95'?0.95:r[0];
+    return '<button class="'+(rate===v?'on':'')+'" onclick="LS.voice.rate='+v+';saveLS();openSettings()">'+r[1]+'</button>';
+  }).join('');
+  openModal('<div class="modal-head"><span class="modal-title">'+ico('settings')+' 发音设置</span><button class="modal-x" onclick="closeModal()">'+ico('x')+'</button></div>' +
+    '<div class="modal-body">' +
+    '<div style="font-weight:700;margin-bottom:8px">英音 / 美音</div><div class="seg">'+accSeg+'</div>' +
+    '<div style="font-weight:700;margin:18px 0 8px">朗读语速</div><div class="seg">'+rateSeg+'</div>' +
+    '<div style="margin-top:18px"><button class="btn btn-sm" onclick="playDemo()">'+ico('vol')+'试听：Good morning! Nice to meet you.</button></div>' +
+    '<p style="font-size:12.5px;color:var(--ink-3);margin-top:16px;line-height:1.7">语音由浏览器内置引擎朗读（Web Speech API）。若无声或语速异常，请检查系统语音库是否已安装英文语音包。</p></div>');
+}
+/* ============ 全局状态与路由 ============ */
+const S = { examLevel:'junior', examDiff:'basic', exam:null, dictQ:'', dictFlt:'all', fc:null, _all:null };
+const R = {
+  parse(){ const h = location.hash.replace(/^#\/?/, ''); return h.split('/').filter(Boolean); },
+  go(h){ location.hash = '#/' + h; }
+};
+function route(){
+  const p = R.parse(); const p1 = p[0], p2 = p[1], p3 = p[2];
+  let html;
+  if(!p1 || p1 === 'home') html = renderHome();
+  else if(p1 === 'level' && p2) html = renderLevel(p2);
+  else if(p1 === 'lesson' && p2 && p3) html = renderLesson(p2, p3);
+  else if(p1 === 'tips' && p2) html = renderTipList(p2);
+  else if(p1 === 'tips') html = renderTipHome();
+  else if(p1 === 'tip' && p2 && p3) html = renderTip(p2, p3);
+  else if(p1 === 'exam') html = renderExam();
+  else if(p1 === 'dict') html = renderDict();
+  else if(p1 === 'progress') html = renderProgress();
+  else html = renderHome();
+  $('#app').innerHTML = html;
+  markNav();
+  window.scrollTo(0, 0);
+  afterRender(p1, p2, p3);
+}
+
+/* ============ 单词播放辅助（避免内联文本转义问题） ============ */
+function playWordEx(lv, u, i){ const w = unitWords(lv, u).words[i]; TTS.en(w[4]); }
+function playSSlow(lv, u, i){ TTS.en(unitWords(lv, u).sts[i][0], 0.65); }
+function playGex(lv, u, gi){ TTS.en(unitWords(lv, u).gram.ex[gi][0]); }
+function playWordOnly(lv, u, i){ TTS.en(unitWords(lv, u).words[i][0]); }
+function playQWord(){ const q = S.exam.questions[S.exam.ti]; if(q && q.word) TTS.en(q.word[0]); }
+function playDemo(){ TTS.en('Good morning! Nice to meet you.'); }
+
+/* ============ 考试引擎 ============ */
+let examTimerId = null;
+function fmtTime(s){ const m = Math.floor(s/60), ss = s%60; return (m<10?'0':'')+m+':'+(ss<10?'0':'')+ss; }
+function startTimer(){
+  clearInterval(examTimerId);
+  examTimerId = setInterval(() => {
+    const e = S.exam;
+    if(!e || e.mode !== 'taking'){ clearInterval(examTimerId); return; }
+    e.sec = Math.floor((Date.now() - e.start)/1000);
+    const el = $('#examTimer'); if(el) el.textContent = fmtTime(e.sec);
+  }, 1000);
+}
+function startExam(){
+  const levelId = S.examLevel || 'junior', diff = S.examDiff || 'basic';
+  const d = DIFF[diff];
+  const words = [];
+  UNITS[levelId].forEach(u => u.words.forEach(w => words.push({w})));
+  const cnSet = [...new Set(words.map(x => x.w[3]))];
+  const used = new Set();
+  const usedGram = new Set();
+  function nextWord(){
+    let w, tries = 0;
+    do { w = words[Math.floor(Math.random()*words.length)]; tries++; } while(used.has(w.w[0]) && tries < 50);
+    used.add(w.w[0]); return w;
+  }
+  const qs = [];
+  const mk = {
+    hear(){ const w = nextWord(); const opts = [w.w[3]]; while(opts.length < 3){ const o = pick(cnSet, 1); if(!opts.includes(o)) opts.push(o); } shuffle(opts); qs.push({type:'hear', word:w.w, opts, ans:opts.indexOf(w.w[3]), why:'听音识义：'+w.w[3]+'。'}); },
+    ec(){ const w = nextWord(); const opts = [w.w[3]]; while(opts.length < 3){ const o = pick(cnSet, 1); if(!opts.includes(o)) opts.push(o); } shuffle(opts); qs.push({type:'ec', word:w.w, opts, ans:opts.indexOf(w.w[3]), why:'释义：'+w.w[3]+'。'}); },
+    ce(){ const w = nextWord(); const opts = [w.w[0]]; while(opts.length < 3){ const o = pick(words, 1).w[0]; if(!opts.includes(o)) opts.push(o); } shuffle(opts); qs.push({type:'ce', word:w.w, opts, ans:opts.indexOf(w.w[0]), why:'对应英文：'+w.w[0]+'（/'+w.w[1]+'/）。'}); },
+    gram(){ const pool = GRAM[levelId]; const slice = diff === 'basic' ? pool.slice(0,5) : diff === 'advanced' ? pool.slice(0,8) : pool; let avail = slice.filter(g => !usedGram.has(g)); if(!avail.length) avail = slice; const g = pick(avail, 1); usedGram.add(g); qs.push({type:'gram', q:g.q, opts:g.opts, ans:g.a, why:g.why}); },
+    spell(){ const w = nextWord(); qs.push({type:'spell', word:w.w, cn:w.w[3], ipa:w.w[1], pos:w.w[2], ans:w.w[0], why:'拼写：'+w.w[0]+'（/'+w.w[1]+'/，'+w.w[3]+'）。'}); }
+  };
+  ['hear','ec','ce','gram','spell'].forEach(t => { for(let i = 0; i < d.mix[t]; i++) mk[t](); });
+  shuffle(qs);
+  S.exam = {mode:'taking', levelId, diff, questions:qs, answers:Array(qs.length).fill(null), ti:0, start:Date.now(), sec:0};
+  route(); startTimer();
+}
+function answerQ(i){
+  const e = S.exam; if(!e) return;
+  e.answers[e.ti] = i;
+  if(e.ti < e.questions.length - 1){ setTimeout(() => { e.ti++; route(); }, 320); }
+  else renderTaking();
+}
+function checkSpell(){
+  const e = S.exam; if(!e) return;
+  const inp = $('#spellInput'); if(!inp) return;
+  e.answers[e.ti] = inp.value.trim();
+  if(e.ti < e.questions.length - 1){ setTimeout(() => { e.ti++; route(); }, 320); }
+  else renderTaking();
+}
+function submitExam(){
+  const e = S.exam; if(!e || e.mode !== 'taking') return;
+  clearInterval(examTimerId);
+  let correct = 0; const perType = {}, wrongs = [];
+  e.questions.forEach((q, i) => {
+    const a = e.answers[i]; const t = q.type;
+    if(!perType[t]) perType[t] = {c:0, n:0};
+    perType[t].n++;
+    let ok;
+    if(q.type === 'spell'){ ok = (String(a||'').toLowerCase().replace(/[^a-z\s-]/g,'') === q.word[0].toLowerCase().replace(/[^a-z\s-]/g,'')); }
+    else ok = a === q.ans;
+    if(ok){ correct++; perType[t].c++; }
+    else wrongs.push({type:t, word:q.word?q.word[0]:'', cn:q.word?q.word[3]:'', ipa:q.word?q.word[1]:'', q:q.q, opts:q.opts, ans:q.ans, your:a, why:q.why});
+  });
+  const score = Math.round(correct / e.questions.length * 100);
+  LS.history.push({date:Date.now(), levelId:e.levelId, diff:e.diff, score, correct, total:e.questions.length, sec:e.sec});
+  if(LS.history.length > 50) LS.history = LS.history.slice(-50);
+  saveLS();
+  e.result = {correct, wrongs, perType, sec:e.sec};
+  e.mode = 'result';
+  route();
+}
+function restartExam(){
+  S.exam = null;
+  startExam();
+}
+
+/* ============ 图表（ECharts，带降级） ============ */
+const CHART_COLORS = ['#1E6B5A', '#E08F2E', '#3D6FB4', '#7A5AA7', '#BC4B39'];
+function chartInit(id, opt){
+  const el = document.getElementById(id); if(!el) return;
+  if(window.echarts){
+    const c = echarts.getInstanceByDom(el) || echarts.init(el);
+    c.setOption(opt, true);
+    return c;
+  }
+  el.innerHTML = '<div style="font-size:12px;color:var(--ink-3);padding-top:6px">图表库未加载（离线时），以下为数据摘要：</div>';
+}
+function drawLine(){
+  const hist = LS.history.slice(); // 时间正序
+  if(!hist.length){ const el = $('#lineChart'); if(el) el.innerHTML = '<div class="empty" style="border:none;background:transparent"><b>暂无考试记录</b>完成一次模拟考试后显示成绩趋势</div>'; return; }
+  const data = hist.map(h => h.score);
+  const labels = hist.map(h => { const d = new Date(h.date); return (d.getMonth()+1)+'/'+d.getDate(); });
+  const c = chartInit('lineChart', {
+    grid:{left:36, right:16, top:26, bottom:28},
+    xAxis:{type:'category', data:labels, axisLine:{lineStyle:{color:'#C9BFAA'}}, axisLabel:{color:'#8A948C', fontSize:11}},
+    yAxis:{type:'value', min:0, max:100, axisLabel:{color:'#8A948C', fontSize:11}, splitLine:{lineStyle:{color:'#EFE8D8'}}},
+    series:[{type:'line', data, smooth:true, symbol:'circle', symbolSize:7, itemStyle:{color:'#1E6B5A'}, lineStyle:{width:3, color:'#1E6B5A'}, areaStyle:{color:'rgba(30,107,90,.12)'}, markLine:{silent:true, data:[{type:'average', lineStyle:{color:'#DE8F2E', type:'dashed'}}]}}],
+    tooltip:{trigger:'axis'}
+  });
+  if(c) c.resize();
+}
+function drawBar(){
+  const vals = LV.map(l => { let n = 0; UNITS[l.id].forEach(u => u.words.forEach((w,i) => { if(LS.learned[wKey(l.id,u.id,i)]) n++; })); return n; });
+  const c = chartInit('barChart', {
+    grid:{left:36, right:16, top:26, bottom:28},
+    xAxis:{type:'category', data:LV.map(l => l.name), axisLine:{lineStyle:{color:'#C9BFAA'}}, axisLabel:{color:'#8A948C', fontSize:11}},
+    yAxis:{type:'value', minInterval:1, axisLabel:{color:'#8A948C', fontSize:11}, splitLine:{lineStyle:{color:'#EFE8D8'}}},
+    series:[{type:'bar', data:vals.map((v,i) => ({value:v, itemStyle:{color:LV[i].c, borderRadius:[6,6,0,0]}})), barWidth:'46%', label:{show:true, position:'top', fontSize:11, color:'#5D6B64'}}],
+    tooltip:{trigger:'axis'}
+  });
+  if(c) c.resize();
+}
+function drawRadar(){
+  const r = S.exam && S.exam.result ? S.exam.result : null; if(!r) return;
+  const items = Object.keys(r.perType);
+  const c = chartInit('radarChart', {
+    radar:{indicator: items.map(t => ({name:QTYPE[t][0], max:100})), radius:'62%', splitArea:{areaStyle:{color:['#FFFDF7','#F7F0DE']}}, axisName:{color:'#5D6B64', fontSize:11}},
+    series:[{type:'radar', data:[{value:items.map(t => r.perType[t].n ? Math.round(r.perType[t].c/r.perType[t].n*100) : 0), name:'正确率', areaStyle:{color:'rgba(30,107,90,.25)'}, lineStyle:{color:'#1E6B5A'}, itemStyle:{color:'#1E6B5A'}}]}],
+    tooltip:{}
+  });
+  if(c) c.resize();
+}
+function afterRender(p1){
+  if(p1 === 'exam'){
+    const e = S.exam;
+    if(e && e.mode === 'taking' && e.questions[e.ti].type === 'hear'){
+      setTimeout(() => { const q = S.exam.questions[S.exam.ti]; if(q && q.type === 'hear') TTS.en(q.word[0]); }, 500);
+    }
+    if(e && e.mode === 'result') drawRadar();
+  }
+  if(p1 === 'progress'){ drawLine(); drawBar(); }
+}
+
+/* ============ 词典：局部刷新（保持输入焦点） ============ */
+function dictList(){
+  const q = (S.dictQ || '').trim().toLowerCase();
+  const flt = S.dictFlt || 'all';
+  let list = allWords().filter(x => flt === 'all' || x.lv === flt);
+  if(q) list = list.filter(x => x.w[0].toLowerCase().indexOf(q) >= 0 || x.w[3].indexOf(S.dictQ.trim()) >= 0 || x.w[1].indexOf(S.dictQ.trim()) >= 0);
+  return q ? list : list.slice(0, 28);
+}
+function dictRowsHtml(list){
+  if(!list.length) return '<div class="empty"><b>没有找到匹配的单词</b>换个关键词试试，比如 apple / 苹果 / æpl</div>';
+  const rows = list.map(x => {
+    const fav = LS.favs.some(f => f.k === x.k), done = !!LS.learned[x.k];
+    const l = LVMap(x.lv);
+    return '<div class="card dict-row">' +
+      '<div class="d-word">'+x.w[0]+'<span class="d-ipa">/'+x.w[1]+'/</span><span class="badge green">'+x.w[2]+'</span><span class="chip lv" style="background:'+l.c+'">'+l.name+'</span></div>' +
+      '<div class="d-cn">'+x.w[3]+'</div>' +
+      '<div class="d-ex">'+x.w[4]+'</div><div class="d-excn">'+x.w[5]+'</div>' +
+      '<div class="d-acts">' +
+      '<button class="mini-btn" onclick="playWord(\''+x.lv+'\',\''+x.u+'\','+x.i+')" title="朗读">'+ico('vol')+'</button>' +
+      '<button class="mini-btn '+(fav?'on':'')+'" onclick="toggleFav(\''+x.lv+'\',\''+x.u+'\','+x.i+')" title="收藏">'+ico('bookmark')+'</button>' +
+      '<button class="mini-btn '+(done?'done':'')+'" onclick="markLearned(\''+x.lv+'\',\''+x.u+'\','+x.i+')" title="标记已学">'+ico('check')+'</button>' +
+      '</div></div>';
+  }).join('');
+  return '<div class="dict-results">'+rows+'</div>';
+}
+function dictRefresh(){ const el = $('#dictRes'); if(el) el.innerHTML = dictRowsHtml(dictList()); }
+
+/* ============ 初始化 ============ */
+function init(){
+  renderNav();
+  route();
+  window.addEventListener('hashchange', route);
+  if('speechSynthesis' in window){
+    speechSynthesis.onvoiceschanged = function(){};
+    try{ speechSynthesis.getVoices(); }catch(err){}
+  }
+}
+init();
+</script>
+</body>
+</html>
